@@ -19,6 +19,8 @@
   },
   "homepage": "https://github.com/Red-Lipped-Batfish-Team/Scratch#readme",
   "dependencies": {
+    "@material-ui/core": "^4.12.3",
+    "axios": "^0.24.0",
     "@emotion/react": "^11.7.1",
     "@emotion/styled": "^11.6.0",
     "@mui/material": "^5.2.6",
