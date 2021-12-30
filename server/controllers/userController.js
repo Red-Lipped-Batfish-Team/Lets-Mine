@@ -55,11 +55,13 @@ userController.postUser = async (req, res, next) => {
     const schema = ["first_name", "last_name", "email", "password", "address"];
     const missingFields = [];
     const params = schema.reduce((arr, field) => {
+      console.log(field, req.body[field]);
       if (field in req.body) {
         arr.push(req.body[field]);
         return arr;
       } else {
         missingFields.push(field);
+        return arr;
       }
     }, []);
 
