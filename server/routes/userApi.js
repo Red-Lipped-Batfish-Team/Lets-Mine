@@ -12,27 +12,27 @@ const {
  * User REST API
  */
 // Get Users
-router.get("/users", getUsers, (req, res) => {
+router.get("/", getUsers, (req, res) => {
   return res.status(200).json({ users: res.locals.users });
 });
 
 // Get a User
-router.get("/users/:id", getUser, (req, res) => {
+router.get("/:id", getUser, (req, res) => {
   return res.status(200).json({ user: res.locals.user });
 });
 
 // Post a User
-router.post("/users", postUser, (req, res) => {
+router.post("/", postUser, (req, res) => {
   return res.status(200).json({ userId: res.locals.userId });
 });
 
 // Patch a User
-router.patch("/users/:id", patchUser, (req, res) => {
+router.patch("/:id", patchUser, (req, res) => {
   return res.status(200).json({ userId: res.locals.userId });
 });
 
-// Patch a User
-router.delete("/users/:id", deleteUser, (req, res) => {
+// Delete a User
+router.delete("/:id", deleteUser, (req, res) => {
   return res.status(200).json({ userId: res.locals.userId });
 });
 

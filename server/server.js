@@ -2,7 +2,12 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const cookieParser = require("cookie-parser");
-const apiRouter = require("./routes/api");
+const userApiRouter = require("./routes/userApi");
+const transactionApiRouter = require("./routes/transactionApi");
+const cartApiRouter = require("./routes/cartApi");
+const itemApiRouter = require("./routes/itemApi");
+const hashrateApiRouter = require("./routes/hashrateApi");
+const coinApiRouter = require("./routes/coinApi");
 
 const PORT = process.env.PORT || 3000;
 
@@ -19,7 +24,12 @@ app.use(cookieParser());
 /**
  * REST API Router
  */
-app.use("/api", apiRouter);
+app.use("/api/users", userApiRouter);
+app.use("/api/transactions", transactionApiRouter);
+app.use("/api/carts", cartApiRouter);
+app.use("/api/items", itemApiRouter);
+app.use("/api/hashrates", hashrateApiRouter);
+app.use("/api/coins", coinApiRouter);
 
 // Statically serve everything in the build folder on the route '/public'
 if (process.env.NODE_ENV === "production") {

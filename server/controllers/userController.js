@@ -16,12 +16,7 @@ userController.getUsers = async (req, res, next) => {
 
     return next();
   } catch (err) {
-    return next({
-      log: "userController.getUsers: ERROR: /* the error while getting data from database */",
-      message: {
-        err: "userController.getUsers: ERROR: Check server logs for details",
-      },
-    });
+    return res.status(400).send(err.message);
   }
 };
 
@@ -55,7 +50,6 @@ userController.postUser = async (req, res, next) => {
     const schema = ["first_name", "last_name", "email", "password", "address"];
     const missingFields = [];
     const params = schema.reduce((arr, field) => {
-      console.log(field, req.body[field]);
       if (field in req.body) {
         arr.push(req.body[field]);
         return arr;
@@ -86,7 +80,7 @@ userController.postUser = async (req, res, next) => {
 
 // Patch a User Controller
 userController.patchUser = async (req, res, next) => {
-  const userId = [req.params.id];
+  const userId = req.params.id;
   const schema = ["first_name", "last_name", "email", "password", "address"];
 
   let setValue = schema.reduce((str, field) => {
