@@ -17,7 +17,7 @@ const App = () => {
             path="/"
             element={
               <>
-                <H1>Hello World!</H1>
+                <h1>Hello World!</h1>
                 <Counter />
               </>
             }
