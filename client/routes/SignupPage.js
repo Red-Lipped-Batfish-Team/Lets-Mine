@@ -11,6 +11,8 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setToken } from "../features/authToken/tokenSlice";
 
 //import icons
 
@@ -43,6 +45,7 @@ const SignupPage = () => {
   const [emailError, setEmailError] = useState(false);
   const [dupEmailMsg, setDupEmailMsg] = useState(false);
   const [passwordError, setPasswordError] = useState(false);
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -69,7 +72,7 @@ const SignupPage = () => {
     }
 
     if (firstName && lastName && address && email && password) {
-      const payload = {
+      const userPayload = {
         first_name: firstName,
         last_name: lastName,
         address,
@@ -77,12 +80,30 @@ const SignupPage = () => {
         password,
       };
 
-      const res = await axios.post("/api/users", payload, {
+      const res = await axios.post("/api/users", userPayload, {
         headers: {
           "Content-Type": "application/json",
         },
       });
-      if (res.data.userId) navigate("/marketplace");
+
+      if (res.data.userId) {
+        const authPayload = {
+          email,
+          password,
+        };
+
+        const res = await axios.post("/auth", authPayload, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+
+        if (res.data.sessionId) {
+          dispatch(setToken(res.data.sessionId));
+          navigate("/marketplace");
+        }
+      }
+
       if (
         res.data ===
         'duplicate key value violates unique constraint "email_unique"'

@@ -8,7 +8,6 @@ const { authenticateUser } = require("../controllers/authController");
  */
 // Password
 router.post("/", authenticateUser, (req, res) => {
-  console.log(res.locals.sessionId);
   return res.status(200).json({ sessionId: res.locals.sessionId });
 });
 
