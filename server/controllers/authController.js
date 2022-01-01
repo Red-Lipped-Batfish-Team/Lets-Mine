@@ -25,20 +25,44 @@ authController.authenticateUser = async (req, res, next) => {
     const hash = await bcrypt.hash(Math.random().toString(36), salt);
 
     const hashQuery = `
-      INSERT INTO session (user_id, ssid)
+      INSERT INTO session (user_id, token)
       VALUES ($1, $2)
-      RETURNING ssid
+      RETURNING token
     `;
 
     const params = [userId, hash];
 
     const session = await db.query(hashQuery, params);
-    const sessionId = session.rows[0].ssid;
+    const token = session.rows[0].token;
 
-    if (!sessionId)
+    if (!token)
       throw new Error(`Unexpected error occured while creating a session`);
 
-    res.locals.sessionId = sessionId;
+    res.locals.token = token;
+
+    return next();
+  } catch (err) {
+    return res.status(200).send(err.message);
+  }
+};
+
+// Validate a session ID
+authController.validateSession = async (req, res, next) => {
+  const { userId, token } = req.body;
+  try {
+    const query = `
+    SELECT *
+    FROM session
+    WHERE user_id = '${userId}' AND token = '${token}'
+    `;
+
+    const session = await db.query(query);
+
+    if (session.rows.length === 0) {
+      res.locals.isValid = false;
+    } else {
+      res.locals.isValid = true;
+    }
 
     return next();
   } catch (err) {

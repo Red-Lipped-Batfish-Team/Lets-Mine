@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const { authenticateUser } = require("../controllers/authController");
+const {
+  authenticateUser,
+  validateSession,
+} = require("../controllers/authController");
 
 /**
  * Authenticate a User
@@ -8,7 +11,11 @@ const { authenticateUser } = require("../controllers/authController");
  */
 // Password
 router.post("/", authenticateUser, (req, res) => {
-  return res.status(200).json({ sessionId: res.locals.sessionId });
+  return res.status(200).json({ token: res.locals.token });
+});
+
+router.post("/session", validateSession, (req, res) => {
+  return res.status(200).json({ isValid: res.locals.isValid });
 });
 
 module.exports = router;

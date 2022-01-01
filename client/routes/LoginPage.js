@@ -62,8 +62,8 @@ const LoginPage = () => {
           "Content-Type": "application/json",
         },
       });
-      if (res.data.sessionId) {
-        dispatch(setToken(res.data.sessionId));
+      if (res.data.token) {
+        dispatch(setToken(res.data.token));
         navigate("/marketplace");
       }
       if (res.data === "Incorrect email or password provided") {
