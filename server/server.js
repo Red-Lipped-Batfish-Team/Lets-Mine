@@ -35,7 +35,7 @@ app.use("/api/coins", coinApiRouter);
 app.use("/auth", authRouter);
 
 /**
- * Recurring schedules
+ * Recurring cron schedules
  */
 sessionClear();
 

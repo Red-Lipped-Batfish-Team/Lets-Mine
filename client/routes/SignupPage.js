@@ -98,8 +98,8 @@ const SignupPage = () => {
           },
         });
 
-        if (res.data.sessionId) {
-          dispatch(setToken(res.data.sessionId));
+        if (res.data.token) {
+          dispatch(setToken(res.data.token));
           navigate("/marketplace");
         }
       }
