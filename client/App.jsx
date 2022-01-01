@@ -6,7 +6,6 @@ import {
   Navigate,
 } from "react-router-dom";
 import MarketContainer from "./routes/MarketPage";
-import Counter from "./components/Counter";
 import LoginPage from "./routes/LoginPage";
 import SignupPage from "./routes/SignupPage";
 
@@ -20,7 +19,6 @@ const App = () => {
             element={
               <>
                 <h1>Hello World!</h1>
-                <Counter />
               </>
             }
           ></Route>

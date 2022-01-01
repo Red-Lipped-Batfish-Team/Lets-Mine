@@ -21,24 +21,16 @@ authController.authenticateUser = async (req, res, next) => {
     }
     const userId = user.rows[0].id;
 
-    /**
-     * TODO: Create a session
-     */
     const salt = await bcrypt.genSalt(SALT_WORK_FACTOR);
     const hash = await bcrypt.hash(Math.random().toString(36), salt);
 
     const hashQuery = `
-      INSERT INTO session (user_id, ssid, expiration)
-      VALUES ($1, $2, $3)
+      INSERT INTO session (user_id, ssid)
+      VALUES ($1, $2)
       RETURNING ssid
     `;
 
-    // Session expires 1 day after
-    let exp = new Date();
-    exp.setDate(exp.getDate() + 1);
-    exp = exp.toISOString().slice(0, 10);
-
-    const params = [userId, hash, exp];
+    const params = [userId, hash];
 
     const session = await db.query(hashQuery, params);
     const sessionId = session.rows[0].ssid;
@@ -50,8 +42,7 @@ authController.authenticateUser = async (req, res, next) => {
 
     return next();
   } catch (err) {
-    console.log(err);
-    // return res.status(200).send(err.message);
+    return res.status(200).send(err.message);
   }
 };
 
