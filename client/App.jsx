@@ -5,8 +5,10 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import MarketContainer from "./containers/MarketContainer";
+import MarketContainer from "./routes/MarketPage";
 import Counter from "./components/Counter";
+import LoginPage from "./routes/LoginPage";
+import SignupPage from "./routes/SignupPage";
 
 const App = () => {
   return (
@@ -22,6 +24,8 @@ const App = () => {
               </>
             }
           ></Route>
+          <Route path="/login" element={<LoginPage />}></Route>
+          <Route path="/signup" element={<SignupPage />}></Route>
           <Route path="/marketplace" element={<MarketContainer />}></Route>
         </Routes>
       </div>

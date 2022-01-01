@@ -49,25 +49,15 @@ const LoginPage = () => {
       setPassError(true);
     }
     if (email && password) {
-      try {
-        const headers = {
+      const payload = {
+        email,
+        password,
+      };
+      const res = await axios.post("/auth", payload, {
+        headers: {
           "Content-Type": "application/json",
-        };
-        const result = await axios.post(
-          "http://localhost:5000/api/users/login",
-          {
-            email,
-            password,
-          },
-          headers
-        );
-
-        navigate("/secret");
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      navigate("/secret");
+        },
+      });
     }
   };
 
@@ -111,7 +101,7 @@ const LoginPage = () => {
               </Button>
               <br />
               <br />
-              <Link to="/">Signup</Link>
+              <Link to="/signup">Signup</Link>
             </Paper>
           </Grid>
         </Grid>

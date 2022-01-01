@@ -8,6 +8,7 @@ const cartApiRouter = require("./routes/cartApi");
 const itemApiRouter = require("./routes/itemApi");
 const hashrateApiRouter = require("./routes/hashrateApi");
 const coinApiRouter = require("./routes/coinApi");
+const authRouter = require("./routes/auth");
 
 const PORT = process.env.PORT || 3000;
 
@@ -30,6 +31,7 @@ app.use("/api/carts", cartApiRouter);
 app.use("/api/items", itemApiRouter);
 app.use("/api/hashrates", hashrateApiRouter);
 app.use("/api/coins", coinApiRouter);
+app.use("/auth", authRouter);
 
 // Statically serve everything in the build folder on the route '/public'
 if (process.env.NODE_ENV === "production") {
