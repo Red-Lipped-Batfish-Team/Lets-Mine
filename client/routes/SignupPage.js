@@ -83,7 +83,6 @@ const SignupPage = () => {
         },
       });
       if (res.data.userId) navigate("/marketplace");
-      console.log(res.data);
       if (
         res.data ===
         'duplicate key value violates unique constraint "email_unique"'
