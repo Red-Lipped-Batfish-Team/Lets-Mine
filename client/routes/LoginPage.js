@@ -53,16 +53,16 @@ const LoginPage = () => {
         const headers = {
           "Content-Type": "application/json",
         };
-        const result = await axios.post(
-          "http://localhost:5000/api/users/login",
-          {
-            email,
-            password,
-          },
-          headers
-        );
+        // const result = await axios.post(
+        //   "http://localhost:5000/api/users/login",
+        //   {
+        //     email,
+        //     password,
+        //   },
+        //   headers
+        // );
 
-        navigate("/secret");
+        // navigate("/secret");
       } catch (error) {
         console.log(error);
       }
@@ -111,7 +111,7 @@ const LoginPage = () => {
               </Button>
               <br />
               <br />
-              <Link to="/">Signup</Link>
+              <Link to="/signup">Signup</Link>
             </Paper>
           </Grid>
         </Grid>

@@ -32,42 +32,63 @@ const useStyles = makeStyles({
 const SignupPage = () => {
   const classes = useStyles();
   const navigate = useNavigate();
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [address, setAddress] = useState("");
   const [email, setEmail] = useState("");
-  const [username, setUser] = useState("");
   const [password, setPassword] = useState("");
+  const [firstNameError, setFirstNameError] = useState(false);
+  const [lastNameError, setLastNameError] = useState(false);
+  const [addressError, setAddressError] = useState(false);
   const [emailError, setEmailError] = useState(false);
-  const [userError, setUserError] = useState(false);
-  const [passError, setPassError] = useState(false);
+  const [dupEmailMsg, setDupEmailMsg] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setFirstNameError(false);
+    setLastNameError(false);
+    setAddressError(false);
     setEmailError(false);
-    setUserError(false);
-    setPassError(false);
+    setPasswordError(false);
 
+    if (firstName === "") {
+      setFirstNameError(true);
+    }
+    if (lastName === "") {
+      setLastNameError(true);
+    }
+    if (address === "") {
+      setAddressError(true);
+    }
     if (email === "") {
       setEmailError(true);
     }
-    if (username === "") {
-      setUserError(true);
-    }
     if (password === "") {
-      setPassError(true);
+      setPasswordError(true);
     }
-    if (email && username && password) {
-      try {
-        console.log("here");
-        await axios.post("http://localhost:5000/api/users/", {
-          email,
-          username,
-          password,
-        });
-        //   setUser('')
-        //   setEmail('')
-        //   setPassword('')
-        navigate("/login");
-      } catch (error) {
-        console.log(error);
+
+    if (firstName && lastName && address && email && password) {
+      const payload = {
+        first_name: firstName,
+        last_name: lastName,
+        address,
+        email,
+        password,
+      };
+
+      const res = await axios.post("/api/users", payload, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (res.data.userId) navigate("/marketplace");
+      console.log(res.data);
+      if (
+        res.data ===
+        'duplicate key value violates unique constraint "email_unique"'
+      ) {
+        setDupEmailMsg("Email already exists!");
       }
     }
   };
@@ -87,7 +108,42 @@ const SignupPage = () => {
                 Signup
               </Typography>
               <TextField
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => setFirstName(e.target.value)}
+                className={classes.field}
+                color="secondary"
+                variant="outlined"
+                label="First Name"
+                required
+                fullWidth
+                error={firstNameError}
+              />
+              <TextField
+                onChange={(e) => setLastName(e.target.value)}
+                className={classes.field}
+                color="secondary"
+                variant="outlined"
+                label="Last Name"
+                required
+                fullWidth
+                error={lastNameError}
+              />
+              <TextField
+                onChange={(e) => setAddress(e.target.value)}
+                className={classes.field}
+                color="secondary"
+                variant="outlined"
+                label="Address"
+                required
+                fullWidth
+                error={addressError}
+              />
+              <TextField
+                onChange={(e) => {
+                  {
+                    setEmail(e.target.value);
+                    setDupEmailMsg("");
+                  }
+                }}
                 className={classes.field}
                 color="secondary"
                 variant="outlined"
@@ -96,16 +152,7 @@ const SignupPage = () => {
                 fullWidth
                 error={emailError}
               />
-              <TextField
-                onChange={(e) => setUser(e.target.value)}
-                className={classes.field}
-                color="secondary"
-                variant="outlined"
-                label="Username"
-                required
-                fullWidth
-                error={userError}
-              />
+              <span className="text-danger">{dupEmailMsg}</span>
               <TextField
                 onChange={(e) => setPassword(e.target.value)}
                 className={classes.field}
@@ -114,7 +161,7 @@ const SignupPage = () => {
                 label="Password"
                 required
                 fullWidth
-                error={passError}
+                error={passwordError}
               />
 
               <Button type="submit" color="secondary" variant="contained">
