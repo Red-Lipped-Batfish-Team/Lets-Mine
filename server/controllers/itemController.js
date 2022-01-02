@@ -116,6 +116,49 @@ itemController.patchItem = async (req, res, next) => {
   }
 };
 
+// Patch With a Transaction Item Controller
+itemController.patchWithTransaction = async (req, res, next) => {
+  const itemId = req.body.item_id;
+  const schema = ["lender_id", "hashrate_id", "model"];
+  const newQuanity = (res.locals.quantityAvailable.rows[0].quantity - req.body.quantity);
+
+  let setValue = schema.reduce((str, field) => {
+    if (field in req.body) {
+      str += field + " = " + "'" + req.body[field] + "', ";
+      return str;
+    } else {
+      return str;
+    }
+  }, "");
+
+  // Add adjusted quantity to setValue
+  setValue += `quantity = '${newQuanity}', `;
+
+  setValue = setValue.replace(/(,\s$)/g, "");
+
+  try {
+
+    const query = `
+    UPDATE item
+    SET ${setValue}
+    WHERE id = ${itemId}
+    RETURNING id
+    `;
+
+    const item = await db.query(query);
+
+    if (item.rows.length === 0) {
+      throw new Error(`No item with id of ${itemId} found!`);
+    }
+
+    res.locals.itemId = item.rows[0].id;
+
+    return next();
+  } catch (err) {
+    return res.status(400).send(err.message);
+  }
+};
+
 // Delete a Item Controller
 itemController.deleteItem = async (req, res, next) => {
   const itemId = req.params.id;

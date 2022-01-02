@@ -8,6 +8,8 @@ const {
   deleteTransaction,
 } = require("../controllers/transactionController");
 
+const { patchWithTransaction } = require("../controllers/itemController");
+
 /**
  * Transaction REST API
  */
@@ -22,7 +24,7 @@ router.get("/:id", getTransaction, (req, res) => {
 });
 
 // Post a Transaction
-router.post("/", postTransaction, (req, res) => {
+router.post("/", postTransaction, patchWithTransaction, (req, res) => {
   return res.status(200).json({ transactionId: res.locals.transactionId });
 });
 
@@ -33,7 +35,7 @@ router.patch("/:id", patchTransaction, (req, res) => {
 
 // Delete a Transaction
 router.delete("/:id", deleteTransaction, (req, res) => {
-  return res.status(200).json({ transactionId: res.locals.transactionId });
+  return res.status(200).json({ transactionId: res.locals.transactionId, itemId: res.locals.itemId });
 });
 
 module.exports = router;
