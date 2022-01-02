@@ -8,6 +8,9 @@ import {
 import MarketContainer from "./containers/MarketContainer";
 import Counter from "./components/Counter";
 import Navbar from "./components/Navbar";
+import MarketContainer from "./routes/MarketPage";
+import LoginPage from "./routes/LoginPage";
+import SignupPage from "./routes/SignupPage";
 
 const App = () => {
   return (
@@ -20,10 +23,11 @@ const App = () => {
             element={
               <>
                 <h1>Hello World!</h1>
-                <Counter />
               </>
             }
           ></Route>
+          <Route path="/login" element={<LoginPage />}></Route>
+          <Route path="/signup" element={<SignupPage />}></Route>
           <Route path="/marketplace" element={<MarketContainer />}></Route>
         </Routes>
       </div>

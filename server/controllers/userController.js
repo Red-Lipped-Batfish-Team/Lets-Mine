@@ -74,7 +74,7 @@ userController.postUser = async (req, res, next) => {
 
     return next();
   } catch (err) {
-    return res.status(400).send(err.message);
+    return res.status(200).send(err.message);
   }
 };
 

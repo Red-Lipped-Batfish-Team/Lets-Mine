@@ -11,6 +11,8 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { setToken } from "../features/authToken/tokenSlice";
 
 //import icons
 
@@ -35,39 +37,38 @@ const LoginPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [emailError, setEmailError] = useState(false);
-  const [passError, setPassError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [loginError, setLoginError] = useState(false);
+  const dispatch = useDispatch();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setEmailError(false);
-    setPassError(false);
+    setPasswordError(false);
 
     if (email === "") {
       setEmailError(true);
     }
     if (password === "") {
-      setPassError(true);
+      setPasswordError(true);
     }
     if (email && password) {
-      try {
-        const headers = {
+      const payload = {
+        email,
+        password,
+      };
+      const res = await axios.post("/auth", payload, {
+        headers: {
           "Content-Type": "application/json",
-        };
-        const result = await axios.post(
-          "http://localhost:5000/api/users/login",
-          {
-            email,
-            password,
-          },
-          headers
-        );
-
-        navigate("/secret");
-      } catch (error) {
-        console.log(error);
+        },
+      });
+      if (res.data.token) {
+        dispatch(setToken(res.data.token));
+        navigate("/marketplace");
       }
-    } else {
-      navigate("/secret");
+      if (res.data === "Incorrect email or password provided") {
+        setLoginError("Incorrect email or password provided!");
+      }
     }
   };
 
@@ -103,15 +104,15 @@ const LoginPage = () => {
                 label="Password"
                 required
                 fullWidth
-                error={passError}
+                error={passwordError}
               />
-
+              <div className="text-danger">{loginError}</div>
               <Button type="submit" color="secondary" variant="contained">
                 Submit
               </Button>
               <br />
               <br />
-              <Link to="/">Signup</Link>
+              <Link to="/signup">Signup</Link>
             </Paper>
           </Grid>
         </Grid>
