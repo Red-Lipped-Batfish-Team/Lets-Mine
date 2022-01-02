@@ -1,4 +1,6 @@
+require("dotenv").config();
 const express = require("express");
+const cors = require("cors");
 const app = express();
 const path = require("path");
 const cookieParser = require("cookie-parser");
@@ -13,12 +15,15 @@ const sessionClear = require("./schedules/sessionClear");
 
 const PORT = process.env.PORT || 3000;
 
+
+
 /**
  * Middlewares
  */
 // Body parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cors());
 
 // Cookie Parser
 app.use(cookieParser());
@@ -42,12 +47,13 @@ sessionClear();
 // Statically serve everything in the build folder on the route '/public'
 if (process.env.NODE_ENV === "production") {
   app.use("/public", express.static(path.join(__dirname, "../public")));
-
+  
   // Serve index.html on the route '/'
   app.use("/", (req, res) => {
     return res
       .status(200)
       .sendFile(path.join(__dirname, "../public/index.html"));
+    
   });
 }
 
@@ -69,5 +75,7 @@ app.use((err, req, res, next) => {
  * Start server
  */
 app.listen(PORT, () => {
-  console.log(`Server is running on the server ${PORT}`);
+  console.log(
+    `Server is running on the server ${PORT}`
+  );
 });

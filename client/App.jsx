@@ -5,12 +5,14 @@ import {
   Route,
   Navigate,
 } from "react-router-dom";
-import MarketContainer from "./containers/MarketContainer";
-import Counter from "./components/Counter";
 import Navbar from "./components/Navbar";
 import MarketContainer from "./routes/MarketPage";
 import LoginPage from "./routes/LoginPage";
 import SignupPage from "./routes/SignupPage";
+import CartPage from "./routes/CartPage";
+import Checkout from "./components/Checkout";
+import SuccessPage from "./routes/SuccessPage";
+import CanceledPage from "./routes/CanceledPage";
 
 const App = () => {
   return (
@@ -29,6 +31,10 @@ const App = () => {
           <Route path="/login" element={<LoginPage />}></Route>
           <Route path="/signup" element={<SignupPage />}></Route>
           <Route path="/marketplace" element={<MarketContainer />}></Route>
+          <Route path="/cart" element={<CartPage />}></Route>
+          <Route path="/checkout" element={<Checkout />}></Route>
+          <Route path="/success" element={<SuccessPage />}></Route>
+          <Route path="/canceled" element={<CanceledPage />}></Route>
         </Routes>
       </div>
     </Router>

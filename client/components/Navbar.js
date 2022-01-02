@@ -3,6 +3,7 @@ import { AppBar, Typography, Toolbar, Button, IconButton, Badge } from "@materia
 import ShoppingCartOutlinedIcon from "@material-ui/icons/ShoppingCartOutlined";
 import { makeStyles } from "@material-ui/core";
 import { Link, useNavigate } from "react-router-dom";
+import { useSelector} from "react-redux";
 
 const useStyles = makeStyles({
   root: {
@@ -20,6 +21,7 @@ const useStyles = makeStyles({
 const Navbar = () => {
   const classes = useStyles();
   const navigate = useNavigate();
+  const count = useSelector((state) => state.cart.quantity);
 
   const handleSignOut = () => {
     //signout user
@@ -41,12 +43,13 @@ const Navbar = () => {
           <Typography className={classes.root} variant="h6">
             searchbar
           </Typography>
-          <IconButton color="inherit" onClick={() => navigate("/checkout")}>
-            <Badge badgeContent={4} color="secondary">
-              <ShoppingCartOutlinedIcon />
-            </Badge>
-          </IconButton>
-
+          <Link className={classes.link} to="/cart">
+            <IconButton color="inherit">
+              <Badge badgeContent={count} color="secondary">
+                <ShoppingCartOutlinedIcon />
+              </Badge>
+            </IconButton>
+          </Link>
           <Button color="inherit" onClick={handleSignOut}>
             signout
           </Button>
