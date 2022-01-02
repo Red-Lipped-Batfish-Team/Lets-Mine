@@ -87,7 +87,7 @@ transactionController.postTransaction = async (req, res, next) => {
 
     const transaction = await db.query(query, params);
     res.locals.transactionId = transaction.rows[0].id;
-    res.locals.quantityAvailable = quantityAvailable // Passing the quantity available
+    res.locals.quantityAvailable = quantityAvailable; // Passing the quantity available
 
     return next();
   } catch (err) {
