@@ -7,10 +7,12 @@ import {
 } from "react-router-dom";
 import MarketContainer from "./containers/MarketContainer";
 import Counter from "./components/Counter";
+import Navbar from "./components/Navbar";
 
 const App = () => {
   return (
     <Router>
+      <Navbar />
       <div className="container">
         <Routes>
           <Route
