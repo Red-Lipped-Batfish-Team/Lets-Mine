@@ -12,6 +12,7 @@ const hashrateApiRouter = require("./routes/hashrateApi");
 const coinApiRouter = require("./routes/coinApi");
 const authRouter = require("./routes/auth");
 const sessionClear = require("./schedules/sessionClear");
+const updateCoinDb = require("./schedules/updateCoin");
 
 const PORT = process.env.PORT || 3000;
 
@@ -43,6 +44,7 @@ app.use("/auth", authRouter);
  * Recurring cron schedules
  */
 sessionClear();
+updateCoinDb();
 
 // Statically serve everything in the build folder on the route '/public'
 if (process.env.NODE_ENV === "production") {
