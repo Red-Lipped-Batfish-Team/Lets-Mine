@@ -6,7 +6,7 @@ const {
   postCart,
   patchCart,
   deleteCart,
-  checkoutCart
+  checkoutCart,
 } = require("../controllers/cartController");
 
 /**
@@ -20,11 +20,6 @@ router.get("/", getCarts, (req, res) => {
 // Get a Cart
 router.get("/:id", getCart, (req, res) => {
   return res.status(200).json({ cart: res.locals.cart });
-});
-
-//checkout cart route
-router.post("/checkout", checkoutCart, (req, res) => {
-  return res.status(200).json({ sessionId: res.locals.sessionId });
 });
 
 // Post a Cart
@@ -42,7 +37,9 @@ router.delete("/:id", deleteCart, (req, res) => {
   return res.status(200).json({ cartId: res.locals.cartId });
 });
 
-
-
+//checkout cart route
+router.post("/checkout", checkoutCart, (req, res) => {
+  return res.status(200).json({ sessionId: res.locals.sessionId });
+});
 
 module.exports = router;

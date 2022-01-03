@@ -13,16 +13,18 @@ const coinApiRouter = require("./routes/coinApi");
 const authRouter = require("./routes/auth");
 const sessionClear = require("./schedules/sessionClear");
 const updateCoinDb = require("./schedules/updateCoin");
-
+const webHookController = require("./controllers/webHookController");
 const PORT = process.env.PORT || 3000;
-
-
 
 /**
  * Middlewares
  */
 // Body parser
-app.use(express.json());
+app.use(
+  express.json({
+    verify: (req, res, buffer) => (req["rawBody"] = buffer),
+  })
+);
 app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
@@ -39,6 +41,7 @@ app.use("/api/items", itemApiRouter);
 app.use("/api/hashrates", hashrateApiRouter);
 app.use("/api/coins", coinApiRouter);
 app.use("/auth", authRouter);
+app.post("/webhook", webHookController);
 
 /**
  * Recurring cron schedules
@@ -49,13 +52,12 @@ updateCoinDb();
 // Statically serve everything in the build folder on the route '/public'
 if (process.env.NODE_ENV === "production") {
   app.use("/public", express.static(path.join(__dirname, "../public")));
-  
+
   // Serve index.html on the route '/'
   app.use("/", (req, res) => {
     return res
       .status(200)
       .sendFile(path.join(__dirname, "../public/index.html"));
-    
   });
 }
 
@@ -77,7 +79,5 @@ app.use((err, req, res, next) => {
  * Start server
  */
 app.listen(PORT, () => {
-  console.log(
-    `Server is running on the server ${PORT}`
-  );
+  console.log(`Server is running on the server ${PORT}`);
 });
