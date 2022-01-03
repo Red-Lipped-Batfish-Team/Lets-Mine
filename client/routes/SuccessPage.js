@@ -1,18 +1,12 @@
-import React, { useEffect, useNavigate } from 'react'
-
+import React, { useEffect, useNavigate } from "react";
 
 const SuccessPage = () => {
-    //useEffect
-    //create transaction
-    //update item inventory
-    //clear cart
+  //useEffect
+  //create transaction
+  //update item inventory
+  //delete cart
 
-    return (
-        <div>
-            Order confirmation page
-            insert "continue Shopping" button
-        </div>
-    )
-}
+  return <div>Order confirmation page insert "continue Shopping" button</div>;
+};
 
-export default SuccessPage
+export default SuccessPage;
