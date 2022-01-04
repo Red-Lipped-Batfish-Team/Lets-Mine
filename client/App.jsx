@@ -1,9 +1,12 @@
 import React from "react";
+// import "./App.css";
+// import Home from "./pages";
+// import About from "./pages/about";
+// import Contact from "./pages/contact";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Navigate,
 } from "react-router-dom";
 import MarketContainer from "./routes/MarketPage";
 import LoginPage from "./routes/LoginPage";
