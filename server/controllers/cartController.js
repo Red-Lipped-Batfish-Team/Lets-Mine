@@ -156,7 +156,7 @@ cartController.deleteCart = async (req, res, next) => {
 
 cartController.checkoutCart = async (req, res, next) => {
   const domainURL = process.env.WEB_APP_URL;
-  const { line_items, customer_email } = req.body;
+  const { line_items, customer_email, cartId } = req.body;
   console.log(req.body);
   //check req.body
   if (!line_items || !customer_email) {
@@ -164,6 +164,7 @@ cartController.checkoutCart = async (req, res, next) => {
       .status(400)
       .json({ error: "missing required stripe session params" });
   }
+  
   let session;
 
   try {
@@ -172,7 +173,9 @@ cartController.checkoutCart = async (req, res, next) => {
       mode: "payment",
       line_items,
       customer_email,
-      success_url: `${domainURL}/success`,
+      client_reference_id: cartId,
+      // success_url: `${domainURL}/success`,
+      success_url: `${domainURL}/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${domainURL}/canceled`,
     });
     res.locals.sessionId = session.id;
@@ -182,4 +185,5 @@ cartController.checkoutCart = async (req, res, next) => {
     res.status(400).json({ error: "chekout cart middleware error" });
   }
 };
+
 module.exports = cartController;

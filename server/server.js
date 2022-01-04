@@ -14,6 +14,7 @@ const authRouter = require("./routes/auth");
 const sessionClear = require("./schedules/sessionClear");
 const updateCoinDb = require("./schedules/updateCoin");
 const webHookController = require("./controllers/webHookController");
+const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY); // use stripe
 const PORT = process.env.PORT || 3000;
 
 /**
