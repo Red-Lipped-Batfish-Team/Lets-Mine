@@ -49,6 +49,7 @@ authController.authenticateUser = async (req, res, next) => {
 // Validate a session ID
 authController.validateSession = async (req, res, next) => {
   const { token } = req.body;
+
   try {
     const query = `
     SELECT *

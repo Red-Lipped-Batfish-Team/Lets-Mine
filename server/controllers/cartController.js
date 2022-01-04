@@ -154,6 +154,38 @@ cartController.deleteCart = async (req, res, next) => {
   }
 };
 
+// Delete a Cart Controller
+cartController.deleteUserCart = async (req, res, next) => {
+  const userId = req.params.id;
+
+  try {
+    const getQuery = `
+    SELECT * FROM cart WHERE borrower_id = ${userId}
+    `;
+    const res = await db.query(getQuery);
+    const ids = res.rows.map((cart) => {
+      return cart.id;
+    });
+
+    for await (const id of ids) {
+      const deleteQuery = `
+        DELETE FROM cart WHERE id = ${id}
+        RETURNING id
+        `;
+
+      const cart = await db.query(deleteQuery);
+
+      if (cart.rows.length === 0) {
+        throw new Error(`No cart with id of ${id} found!`);
+      }
+    }
+
+    return next();
+  } catch (err) {
+    return res.status(400).send(err.message);
+  }
+};
+
 cartController.checkoutCart = async (req, res, next) => {
   const domainURL = process.env.WEB_APP_URL;
   const { line_items, customer_email } = req.body;

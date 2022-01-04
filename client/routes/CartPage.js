@@ -1,30 +1,43 @@
-import React from 'react'
-import CartItem from '../components/CartItem'
-import CartTotal from '../components/CartTotal'
+import React, { useState, useEffect } from "react";
+import CartItem from "../components/CartItem";
+import CartTotal from "../components/CartTotal";
+import axios from "axios";
+import getUserId from "../snippets/getUserId";
 
 const CartPage = () => {
-    
-    //api request to get the cart id or check cart state
-    const cart = [2,2,2,2]
+  //api request to get the cart id or check cart state
+  const cart = [2, 2, 2, 2];
+  const [items, setItems] = useState([]);
 
-    return (
-      <div>
-        <h1>Cart</h1>
+  useEffect(() => {
+    const getItems = async () => {
+      const userId = await getUserId();
+      console.log(userId);
+      const carts = await axios.get("/api/carts").then((res) => res.data.carts);
 
-        {cart.length === 0 ? (
-          <div>"cart is empty"</div>
-        ) : (
-          <>
+      setItems(carts);
+    };
+
+    getItems();
+  }, []);
+
+  return (
+    <div>
+      <h1>Cart</h1>
+      {cart.length === 0 ? (
+        <div>"cart is empty"</div>
+      ) : (
+        <>
+          <div>
             <div>
-              <div>
-                <CartItem />
-              </div>
-              <CartTotal />
+              <CartItem />
             </div>
-          </>
-        )}
-      </div>
-    );
-}
+            <CartTotal />
+          </div>
+        </>
+      )}
+    </div>
+  );
+};
 
-export default CartPage
+export default CartPage;
