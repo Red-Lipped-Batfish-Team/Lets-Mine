@@ -7,7 +7,6 @@ const {
 
 /**
  * Authenticate a User
- * TODO: autheticate a user credential in db and create a session
  */
 // Password
 router.post("/", authenticateUser, (req, res) => {

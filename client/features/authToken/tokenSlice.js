@@ -9,16 +9,12 @@ export const tokenSlice = createSlice({
   initialState,
   reducers: {
     setToken: (state, action) => {
-      sessionStorage.setItem("token", JSON.stringify(action.payload));
+      sessionStorage.setItem("token", action.payload);
       state.token = action.payload;
     },
     clearToken: (state) => {
       sessionStorage.clear();
       state.token = "";
-    },
-    getToken: (state) => {
-      const token = JSON.parse(sessionStorage.getItem("token"));
-      state.token = token;
     },
   },
 });

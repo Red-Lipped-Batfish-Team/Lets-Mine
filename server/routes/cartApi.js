@@ -6,6 +6,7 @@ const {
   postCart,
   patchCart,
   deleteCart,
+  deleteUserCart,
   checkoutCart,
 } = require("../controllers/cartController");
 
@@ -35,6 +36,11 @@ router.patch("/:id", patchCart, (req, res) => {
 // Delete a Cart
 router.delete("/:id", deleteCart, (req, res) => {
   return res.status(200).json({ cartId: res.locals.cartId });
+});
+
+// Delete User's cart items
+router.delete("/user/:id", deleteUserCart, (req, res) => {
+  return res.status(200).json({ isSuccess: true });
 });
 
 //checkout cart route
