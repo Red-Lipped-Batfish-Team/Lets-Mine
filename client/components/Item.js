@@ -2,14 +2,16 @@ import React from "react";
 import Card from "./Card";
 
 const Item = ({ props }) => {
-  const { model, quantity } = props;
+  const { id, model, quantity, duration } = props;
   return (
     <>
       <Card
         props={{
           header: model,
-          body: quantity,
+          quantity: quantity,
+          duration: duration,
           size: "30rem",
+          id: id,
         }}
       />
     </>
