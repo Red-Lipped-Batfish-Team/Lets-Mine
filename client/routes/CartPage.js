@@ -7,20 +7,23 @@ import getUserId from "../snippets/getUserId";
 const CartPage = () => {
   //api request to get the cart id or check cart state
   const cart = [2, 2, 2, 2];
-  const [items, setItems] = useState([]);
+  const [carts, setCarts] = useState([]);
 
   useEffect(() => {
-    const getItems = async () => {
+    const getCarts = async () => {
       const userId = await getUserId();
-      console.log(userId);
-      const carts = await axios.get("/api/carts").then((res) => res.data.carts);
 
-      setItems(carts);
+      const res = await axios.get(`/api/carts/user/${userId}`);
+      const cart = res.data.userCart;
+
+      setCarts(cart);
     };
 
-    getItems();
+    getCarts();
   }, []);
-
+  /**
+   * TODO: Render tems
+   */
   return (
     <div>
       <h1>Cart</h1>
