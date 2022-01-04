@@ -17,7 +17,7 @@ deleteSessions = async () => {
 };
 
 module.exports = () => {
-  console.log("Running cron schedule...");
+  console.log("Running cron schedule to purge old sessions...");
   cron.schedule("0 */3 * * *", () => {
     deleteSessions();
   });
