@@ -48,20 +48,20 @@ authController.authenticateUser = async (req, res, next) => {
 
 // Validate a session ID
 authController.validateSession = async (req, res, next) => {
-  const { userId, token } = req.body;
+  const { token } = req.body;
   try {
     const query = `
     SELECT *
     FROM session
-    WHERE user_id = '${userId}' AND token = '${token}'
+    WHERE token = '${token}'
     `;
 
     const session = await db.query(query);
 
     if (session.rows.length === 0) {
-      res.locals.isValid = false;
+      res.locals.userId = null;
     } else {
-      res.locals.isValid = true;
+      res.locals.userId = session.rows[0].user_id;
     }
 
     return next();

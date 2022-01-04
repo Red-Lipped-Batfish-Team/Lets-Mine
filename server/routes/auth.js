@@ -15,7 +15,7 @@ router.post("/", authenticateUser, (req, res) => {
 });
 
 router.post("/session", validateSession, (req, res) => {
-  return res.status(200).json({ isValid: res.locals.isValid });
+  return res.status(200).json({ userId: res.locals.userId });
 });
 
 module.exports = router;
