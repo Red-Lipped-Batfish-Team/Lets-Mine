@@ -63,6 +63,22 @@ transactionController.postTransaction = async (req, res, next) => {
     if (missingFields.length !== 0)
       throw new Error(`Following fields are missing [${missingFields}]`);
 
+    // Start - Check if this total quantity is available
+    const itemId = req.body.item_id;
+    const quantityRequested = req.body.quantity;
+    const getItemQuantity = `
+      SELECT quantity 
+      FROM item 
+      Where id = ${itemId}
+      `
+    const quantityAvailable = await db.query(getItemQuantity);
+
+    if(quantityAvailable.rows[0].quantity < quantityRequested) {
+      throw new Error(`Quantity requested is not available!`);
+    }
+
+    // End - quantity Check
+
     const query = `
       INSERT INTO transaction (borrower_id, item_id, quantity, due, amount)
       VALUES ($1, $2, $3, $4, $5)
@@ -71,6 +87,7 @@ transactionController.postTransaction = async (req, res, next) => {
 
     const transaction = await db.query(query, params);
     res.locals.transactionId = transaction.rows[0].id;
+    res.locals.quantityAvailable = quantityAvailable; // Passing the quantity available
 
     return next();
   } catch (err) {
