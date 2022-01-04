@@ -6,6 +6,7 @@ const {
   postCart,
   patchCart,
   deleteCart,
+  checkoutCart,
 } = require("../controllers/cartController");
 
 /**
@@ -34,6 +35,11 @@ router.patch("/:id", patchCart, (req, res) => {
 // Delete a Cart
 router.delete("/:id", deleteCart, (req, res) => {
   return res.status(200).json({ cartId: res.locals.cartId });
+});
+
+//checkout cart route
+router.post("/checkout", checkoutCart, (req, res) => {
+  return res.status(200).json({ sessionId: res.locals.sessionId });
 });
 
 module.exports = router;
