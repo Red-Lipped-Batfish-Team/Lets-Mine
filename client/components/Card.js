@@ -9,7 +9,12 @@ import { Button } from "@material-ui/core";
  */
 const Card = ({ props }) => {
   const { header, body, size } = props;
-
+  const createCart = () => {
+    //get user id
+    //check to see if the current user has a cart id
+    //if no cart then we create cart and we patch cart by inserting the item
+    //if cart exists we patch cart by inserting the item
+  }
   return (
     <>
       <div className="card bg-dark mt-3 mb-3" style={{ maxWidth: size }}>

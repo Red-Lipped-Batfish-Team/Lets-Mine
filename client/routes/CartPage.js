@@ -3,8 +3,11 @@ import CartItem from '../components/CartItem'
 import CartTotal from '../components/CartTotal'
 
 const CartPage = () => {
-    
-    //api request to get the cart id or check cart state
+    //get the user id
+    //api request to get the cart id 
+    //iterate over items 
+  
+  
     const cart = [2,2,2,2]
 
     return (
