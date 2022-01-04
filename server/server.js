@@ -21,14 +21,14 @@ const PORT = process.env.PORT || 3000;
  * Middlewares
  */
 // Body parser
+
+app.use(cors());
 app.use(
   express.json({
     verify: (req, res, buffer) => (req["rawBody"] = buffer),
   })
 );
 app.use(express.urlencoded({ extended: false }));
-app.use(cors());
-
 // Cookie Parser
 app.use(cookieParser());
 
