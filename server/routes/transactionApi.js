@@ -30,12 +30,12 @@ router.post("/", postTransaction, patchWithTransaction, (req, res) => {
 
 // Patch a Transaction
 router.patch("/:id", patchTransaction, (req, res) => {
-  return res.status(200).json({ transactionId: res.locals.transactionId });
+  return res.status(200).json({ transactionId: res.locals.transactionId, itemId: res.locals.itemId });
 });
 
 // Delete a Transaction
 router.delete("/:id", deleteTransaction, (req, res) => {
-  return res.status(200).json({ transactionId: res.locals.transactionId, itemId: res.locals.itemId });
+  return res.status(200).json({ transactionId: res.locals.transactionId});
 });
 
 module.exports = router;
