@@ -3,10 +3,11 @@ import CartItem from "../components/CartItem";
 import CartTotal from "../components/CartTotal";
 import axios from "axios";
 import getUserId from "../snippets/getUserId";
+import { Card, CardActionArea } from "@material-ui/core";
 
 const CartPage = () => {
   //api request to get the cart id or check cart state
-  const cart = [2, 2, 2, 2];
+  // const cart = [2, 2, 2, 2];
   const [carts, setCarts] = useState([]);
 
   useEffect(() => {
@@ -14,8 +15,8 @@ const CartPage = () => {
       const userId = await getUserId();
 
       const res = await axios.get(`/api/carts/user/${userId}`);
-      const cart = res.data.userCart;
 
+      const cart = res.data.userCart;
       setCarts(cart);
     };
 
@@ -24,21 +25,18 @@ const CartPage = () => {
   /**
    * TODO: Render tems
    */
+  carts.map((item) => console.log(item));
   return (
     <div>
       <h1>Cart</h1>
-      {cart.length === 0 ? (
+      {carts.length === 0 ? (
         <div>"cart is empty"</div>
       ) : (
-        <>
-          <div>
-            <div>
-              <CartItem />
-            </div>
-            <CartTotal />
-          </div>
-        </>
+        carts.map((item, ind) => {
+          <CartItem key={ind} item={item} />;
+        })
       )}
+      {/* <CartTotal /> */}
     </div>
   );
 };

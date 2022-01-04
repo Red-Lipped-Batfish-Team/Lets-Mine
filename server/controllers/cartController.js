@@ -65,6 +65,7 @@ cartController.getUserCart = async (req, res, next) => {
 
 // Post a Cart Controller
 cartController.postCart = async (req, res, next) => {
+  console.log(req.body);
   try {
     const schema = [
       "borrower_id",
