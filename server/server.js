@@ -13,7 +13,7 @@ const coinApiRouter = require("./routes/coinApi");
 const authRouter = require("./routes/auth");
 const sessionClear = require("./schedules/sessionClear");
 const updateCoinDb = require("./schedules/updateCoin");
-// const webHookController = require("./controllers/webHookController");
+const webHookController = require("./controllers/webHookController");
 const PORT = process.env.PORT || 3000;
 
 /**
@@ -41,7 +41,7 @@ app.use("/api/items", itemApiRouter);
 app.use("/api/hashrates", hashrateApiRouter);
 app.use("/api/coins", coinApiRouter);
 app.use("/auth", authRouter);
-// app.post("/webhook", webHookController);
+app.post("/webhook", webHookController);
 
 /**
  * Recurring cron schedules

@@ -25,16 +25,20 @@ const CartPage = () => {
   /**
    * TODO: Render tems
    */
-  carts.map((item) => console.log(item));
+  console.log('This is the carts: ',carts);
+  // carts.map((item) => console.log(item));
+  // carts.map((item, ind) => {
+  //         <CartItem key={ind} item={item} />;
+  //       })
   return (
     <div>
       <h1>Cart</h1>
       {carts.length === 0 ? (
         <div>"cart is empty"</div>
       ) : (
-        carts.map((item, ind) => {
-          <CartItem key={ind} item={item} />;
-        })
+        carts.map((item, idx) => 
+          <CartItem key={idx} props={item}/>
+        )
       )}
       {/* <CartTotal /> */}
     </div>

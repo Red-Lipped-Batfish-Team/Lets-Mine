@@ -10,7 +10,7 @@ import MarketContainer from "./routes/MarketPage";
 import LoginPage from "./routes/LoginPage";
 import SignupPage from "./routes/SignupPage";
 import CartPage from "./routes/CartPage";
-import Checkout from "./components/Checkout";
+import Checkout from "./routes/Checkout";
 import SuccessPage from "./routes/SuccessPage";
 import CanceledPage from "./routes/CanceledPage";
 import SellerPage from "./routes/SellerPage";
