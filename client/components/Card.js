@@ -12,10 +12,10 @@ import axios from "axios";
  */
 const Card = ({ props }) => {
   const { id, header, quantity, size, duration, hashrate_id } = props;
-  
+
   const [currQuantity, setCurrQuantity] = useState(1);
   const [currDuration, setCurrDuration] = useState(1);
-  const [isAdded, setIsAdded] = useState(false)
+  const [isAdded, setIsAdded] = useState(false);
 
   const handleIncreaseQuantity = () => {
     if (currQuantity < quantity) {
@@ -47,8 +47,8 @@ const Card = ({ props }) => {
 
   const handleAddItem = async () => {
     //get user id
-    const coinPrice = await getCoinPrice(hashrate_id)
-    const price = coinPrice * (currDuration+currQuantity)
+    const coinPrice = await getCoinPrice(hashrate_id);
+    const price = coinPrice * (currDuration + currQuantity);
     const userId = await getUserId();
 
     const cart = {
@@ -60,27 +60,28 @@ const Card = ({ props }) => {
     };
 
     const res = await axios.post("/api/carts/", cart);
+    setIsAdded[true];
     console.log(res);
   };
 
   //useeffect()
   //checking to see if item is in cart
   useEffect(() => {
-
     const getItems = async () => {
       const userId = await getUserId();
 
-      const res = await axios.get(`/api/items/user/${userId}`);
-      console.log(res)
+      const res = await axios.get(`/api/carts/user/${userId}`);
+      console.log("useEffect:", res);
       //check against current item id
-      if (res.data.userItem) {
-        setIsAdded(true);
-      };
-      
+      res.data.userCart.map((elem) => {
+        if (elem.item_id === id) {
+          setIsAdded(true);
+        }
+      });
     };
-    getItems()
+    getItems();
     //get user id and check all items from user and compare against the current item id, if there set isAdded to true
-  },[] )
+  }, [isAdded]);
 
   return (
     <>
@@ -109,14 +110,20 @@ const Card = ({ props }) => {
             -
           </Button>
         </div>{" "}
-        <Button
-          className="mt-2 mb-2"
-          variant="contained"
-          onClick={handleAddItem}
-        >
-          {" "}
-         Add Item
-        </Button>
+        {isAdded ? (
+          <Button disabled variant="contained" className="text-light mt-2 mb-2">
+            Added
+          </Button>
+        ) : (
+          <Button
+            className="mt-2 mb-2"
+            variant="contained"
+            onClick={handleAddItem}
+          >
+            {" "}
+            Add Item
+          </Button>
+        )}
       </div>
     </>
   );
