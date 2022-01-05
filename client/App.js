@@ -1,9 +1,9 @@
 import React from "react";
+import "./App.css";
 import {
   BrowserRouter as Router,
   Routes,
   Route,
-  Navigate,
 } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import MarketContainer from "./routes/MarketPage";
@@ -22,14 +22,9 @@ const App = () => {
       <Navbar />
       <div className="container">
         <Routes>
-          <Route
-            path="/"
-            element={
-              <>
-                <h1>Hello World!</h1>
-              </>
-            }
-          ></Route>
+          {/* <Route path='/' element={<HomePage />}></Route> */}
+          {/* <Route path='/about' element={<AboutPage />}></Route> */}
+          {/* <Route path='/contact' element={<ContactPage />}></Route> */}
           <Route path="/login" element={<LoginPage />}></Route>
           <Route path="/signup" element={<SignupPage />}></Route>
           <Route path="/marketplace" element={<MarketContainer />}></Route>

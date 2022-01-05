@@ -27,10 +27,16 @@ const CartPage = () => {
    */
   carts.map((item) => console.log(item));
   return (
-    <div>
-      <h1>Cart</h1>
+    <div    
+      style={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "top",
+      height: "90vh",
+    }}>
+      <h2>Cart</h2>
       {carts.length === 0 ? (
-        <div>"cart is empty"</div>
+        <div>"Cart is Empty"</div>
       ) : (
         carts.map((item, ind) => {
           <CartItem key={ind} item={item} />;
