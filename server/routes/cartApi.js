@@ -26,7 +26,7 @@ router.get("/:id", getCart, (req, res) => {
 
 // Get User's Cart
 router.get("/user/:id", getUserCart, (req, res) => {
-  console.log("hi");
+  console.log(res.locals.userCart);
   return res.status(200).json({ userCart: res.locals.userCart });
 });
 

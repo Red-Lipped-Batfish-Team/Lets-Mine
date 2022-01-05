@@ -25,15 +25,15 @@ const CartPage = () => {
   /**
    * TODO: Render tems
    */
-  carts.map((item) => console.log(item));
   return (
-    <div    
+    <div
       style={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "top",
-      height: "90vh",
-    }}>
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "top",
+        height: "90vh",
+      }}
+    >
       <h2>Cart</h2>
       {carts.length === 0 ? (
         <div>"Cart is Empty"</div>

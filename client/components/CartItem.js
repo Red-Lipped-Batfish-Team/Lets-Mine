@@ -9,7 +9,7 @@ const CartItem = ({ item }) => {
   //
   console.log(item);
   // const {title, imageURl, price, quantity} = products
-  return <div>hi</div>;
+  return <div>{item}</div>;
 };
 
 export default CartItem;

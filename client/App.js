@@ -14,22 +14,19 @@ import SellerForm from "./components/SellerForm";
 import HomePage from "./routes/HomePage";
 import AboutPage from "./routes/AboutPage";
 import ContactPage from "./routes/ContactPage";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import getUserId from "./snippets/getUserId";
 import { setUser } from "./features/user/userSlice";
 
 const App = () => {
   const dispatch = useDispatch();
-  const user = useSelector((state) => state.user.user);
 
   useEffect(() => {
     const getUser = async () => {
       const userId = await getUserId();
-      console.log(userId);
       if (userId) {
         dispatch(setUser(true));
       }
-      console.log(user);
     };
     getUser();
   });
