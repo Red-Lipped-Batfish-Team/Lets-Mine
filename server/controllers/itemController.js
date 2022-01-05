@@ -44,6 +44,27 @@ itemController.getItem = async (req, res, next) => {
   }
 };
 
+// Get a User Items Controller
+itemController.getUserItem = async (req, res, next) => {
+  const userId = req.params.id;
+
+  try {
+    const query = `
+    SELECT *
+    FROM item
+    WHERE lender_id = ${userId}
+    `;
+
+    const userItem = await db.query(query);
+
+    res.locals.userItem = userItem.rows;
+
+    return next();
+  } catch (err) {
+    return res.status(400).send(err.message);
+  }
+};
+
 // Post a Item Controller
 itemController.postItem = async (req, res, next) => {
   try {
@@ -120,7 +141,8 @@ itemController.patchItem = async (req, res, next) => {
 itemController.patchWithTransaction = async (req, res, next) => {
   const itemId = req.body.item_id;
   const schema = ["lender_id", "hashrate_id", "model"];
-  const newQuanity = (res.locals.quantityAvailable.rows[0].quantity - req.body.quantity);
+  const newQuanity =
+    res.locals.quantityAvailable.rows[0].quantity - req.body.quantity;
 
   let setValue = schema.reduce((str, field) => {
     if (field in req.body) {
@@ -137,7 +159,6 @@ itemController.patchWithTransaction = async (req, res, next) => {
   setValue = setValue.replace(/(,\s$)/g, "");
 
   try {
-
     const query = `
     UPDATE item
     SET ${setValue}
