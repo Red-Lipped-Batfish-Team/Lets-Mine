@@ -14,6 +14,7 @@ import Checkout from "./components/Checkout";
 import SuccessPage from "./routes/SuccessPage";
 import CanceledPage from "./routes/CanceledPage";
 import SellerPage from "./routes/SellerPage";
+import SellerForm from "./components/SellerForm";
 
 const App = () => {
   return (
@@ -34,6 +35,7 @@ const App = () => {
           <Route path="/marketplace" element={<MarketContainer />}></Route>
           <Route path="/cart" element={<CartPage />}></Route>
           <Route path="/seller" element={<SellerPage />}></Route>
+          <Route path="/sellerform" element={<SellerForm />}></Route>
           <Route path="/checkout" element={<Checkout />}></Route>
           <Route path="/success" element={<SuccessPage />}></Route>
           <Route path="/canceled" element={<CanceledPage />}></Route>

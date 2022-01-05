@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@material-ui/core";
 import getUserId from "../snippets/getUserId";
+import getCoinPrice from "../snippets/getCoinPrice";
 import axios from "axios";
 /**
  *
@@ -10,10 +11,11 @@ import axios from "axios";
  * @param {String} props.size
  */
 const Card = ({ props }) => {
-  const { id, header, quantity, size, duration } = props;
-  console.log(id);
+  const { id, header, quantity, size, duration, hashrate_id } = props;
+  
   const [currQuantity, setCurrQuantity] = useState(1);
   const [currDuration, setCurrDuration] = useState(1);
+  const [isAdded, setIsAdded] = useState(false)
 
   const handleIncreaseQuantity = () => {
     if (currQuantity < quantity) {
@@ -45,10 +47,11 @@ const Card = ({ props }) => {
 
   const handleAddItem = async () => {
     //get user id
-    const price = 10 * currQuantity + 10 * currDuration;
+    const coinPrice = await getCoinPrice(hashrate_id)
+    const price = coinPrice * (currDuration+currQuantity)
     const userId = await getUserId();
 
-    const items = {
+    const cart = {
       borrower_id: userId,
       item_id: id,
       quantity: currQuantity,
@@ -56,9 +59,28 @@ const Card = ({ props }) => {
       amount: price,
     };
 
-    const res = await axios.post("/api/carts/", items);
+    const res = await axios.post("/api/carts/", cart);
     console.log(res);
   };
+
+  //useeffect()
+  //checking to see if item is in cart
+  useEffect(() => {
+
+    const getItems = async () => {
+      const userId = await getUserId();
+
+      const res = await axios.get(`/api/items/user/${userId}`);
+      console.log(res)
+      //check against current item id
+      if (res.data.userItem) {
+        setIsAdded(true);
+      };
+      
+    };
+    getItems()
+    //get user id and check all items from user and compare against the current item id, if there set isAdded to true
+  },[] )
 
   return (
     <>
@@ -93,7 +115,7 @@ const Card = ({ props }) => {
           onClick={handleAddItem}
         >
           {" "}
-          Add
+         Add Item
         </Button>
       </div>
     </>
