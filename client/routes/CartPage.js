@@ -44,7 +44,7 @@ const CartPage = () => {
       ) : (
         carts.map((item, idx) => 
           <CartItem key={idx} props={item}/>
-        )
+        
       )}
       {/* <CartTotal /> */}
     </div>
