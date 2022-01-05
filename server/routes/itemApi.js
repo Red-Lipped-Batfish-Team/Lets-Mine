@@ -3,6 +3,7 @@ const router = express.Router();
 const {
   getItems,
   getItem,
+  getUserItem,
   postItem,
   patchItem,
   deleteItem,
@@ -19,6 +20,11 @@ router.get("/", getItems, (req, res) => {
 // Get a Item
 router.get("/:id", getItem, (req, res) => {
   return res.status(200).json({ item: res.locals.item });
+});
+
+// Get a User Items
+router.get("/user/:id", getUserItem, (req, res) => {
+  return res.status(200).json({ userItem: res.locals.userItem });
 });
 
 // Post a Item
