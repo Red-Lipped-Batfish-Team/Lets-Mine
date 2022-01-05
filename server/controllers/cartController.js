@@ -1,5 +1,6 @@
+require("dotenv").config();
 const db = require("../models/db");
-
+const stripeAPI = require("stripe")(process.env.STRIPE_PRIVATE_KEY);
 const cartController = {};
 
 // Get Cart Controller
@@ -153,4 +154,32 @@ cartController.deleteCart = async (req, res, next) => {
   }
 };
 
+cartController.checkoutCart = async (req, res, next) => {
+  const domainURL = process.env.WEB_APP_URL;
+  const { line_items, customer_email } = req.body;
+  console.log(req.body);
+  //check req.body
+  if (!line_items || !customer_email) {
+    return res
+      .status(400)
+      .json({ error: "missing required stripe session params" });
+  }
+  let session;
+
+  try {
+    session = await stripeAPI.checkout.sessions.create({
+      payment_method_types: ["card"],
+      mode: "payment",
+      line_items,
+      customer_email,
+      success_url: `${domainURL}/success`,
+      cancel_url: `${domainURL}/canceled`,
+    });
+    res.locals.sessionId = session.id;
+    return next();
+  } catch (error) {
+    console.log(error);
+    res.status(400).json({ error: "chekout cart middleware error" });
+  }
+};
 module.exports = cartController;
