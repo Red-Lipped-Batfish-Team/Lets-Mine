@@ -58,6 +58,7 @@ itemController.getUserItem = async (req, res, next) => {
     const userItem = await db.query(query);
 
     res.locals.userItem = userItem.rows;
+    console.log(userItem.rows);
 
     return next();
   } catch (err) {

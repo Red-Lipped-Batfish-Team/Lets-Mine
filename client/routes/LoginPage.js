@@ -13,7 +13,7 @@ import { makeStyles } from "@material-ui/core";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setToken } from "../features/authToken/tokenSlice";
-
+import { setUser } from "../features/user/userSlice";
 //import icons
 
 const useStyles = makeStyles({
@@ -64,6 +64,7 @@ const LoginPage = () => {
       });
       if (res.data.token) {
         dispatch(setToken(res.data.token));
+        dispatch(setUser(true));
         navigate("/marketplace");
       }
       if (res.data === "Incorrect email or password provided") {

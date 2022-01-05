@@ -1,23 +1,21 @@
 import React from "react";
 
-const Contact = () => {
+const ContactPage = () => {
   return (
     <div>
-      <h1
-      style={{display: "block"}}>
-        Contact Us</h1>
+      <h1 style={{ display: "block" }}>Contact Us</h1>
       <form>
         <label>
           E-mail
-          <input type="email" class="email"/>
+          <input type="email" class="email" />
         </label>
         <label>
           Subject
-          <input type="text" class="subject"/>
+          <input type="text" class="subject" />
         </label>
         <label>
           Name
-          <input type="text" class="name"/>
+          <input type="text" class="name" />
         </label>
         <label>
           Message
@@ -29,4 +27,4 @@ const Contact = () => {
   );
 };
 
-export default Contact;
+export default ContactPage;

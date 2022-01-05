@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Card from "./Card";
 
 const Item = ({ props }) => {
-  const { id, model, quantity, duration } = props;
+  const { id, model, quantity, duration, hashrate_id } = props;
+  const [cartItems, setCartItems] = useState([]);
   return (
     <>
       <Card
@@ -12,6 +13,9 @@ const Item = ({ props }) => {
           duration: duration,
           size: "30rem",
           id: id,
+          hashrate_id: hashrate_id,
+          cartItems: cartItems,
+          setCartItems: setCartItems,
         }}
       />
     </>

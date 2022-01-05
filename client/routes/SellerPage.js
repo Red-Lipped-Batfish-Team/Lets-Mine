@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import Item from "../components/Item";
 import axios from "axios";
 import getUserId from "../snippets/getUserId";
+import { Button } from "@material-ui/core";
 
 const SellerPage = () => {
   const [fetching, setFetching] = useState(false);
@@ -23,6 +25,12 @@ const SellerPage = () => {
 
   return (
     <>
+      <Link to='/sellerform'>
+        <div>
+          <Button>Add Item</Button>
+        </div>
+      </Link>
+
       {fetching ? (
         <h4>Fetching..</h4>
       ) : (
