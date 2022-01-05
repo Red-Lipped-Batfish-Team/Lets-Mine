@@ -11,24 +11,23 @@ const itemApiRouter = require("./routes/itemApi");
 const hashrateApiRouter = require("./routes/hashrateApi");
 const coinApiRouter = require("./routes/coinApi");
 const authRouter = require("./routes/auth");
-const stripeRouter = require("./routes/stripeApi");
 const sessionClear = require("./schedules/sessionClear");
 const updateCoinDb = require("./schedules/updateCoin");
-const webHookController = require("./controllers/webHookController");
+// const webHookController = require("./controllers/webHookController");
 const PORT = process.env.PORT || 3000;
 
 /**
  * Middlewares
  */
 // Body parser
+
+app.use(cors());
 app.use(
   express.json({
     verify: (req, res, buffer) => (req["rawBody"] = buffer),
   })
 );
 app.use(express.urlencoded({ extended: false }));
-app.use(cors());
-
 // Cookie Parser
 app.use(cookieParser());
 
@@ -42,8 +41,7 @@ app.use("/api/items", itemApiRouter);
 app.use("/api/hashrates", hashrateApiRouter);
 app.use("/api/coins", coinApiRouter);
 app.use("/auth", authRouter);
-app.use("/stipe", stripeRouter);
-app.post("/webhook", webHookController);
+// app.post("/webhook", webHookController);
 
 /**
  * Recurring cron schedules

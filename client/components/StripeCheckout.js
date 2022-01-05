@@ -4,10 +4,10 @@ import axios from "axios";
 
 const StripeCheckout = () => {
   const [email, setEmail] = useState("");
-  const stripe = useStripe();
+    const stripe = useStripe();
     
-  //get cart data from cartSlice
-  const cartItems = [{title: 'item1', price: 100, quantity: 3, description: 'rig1', imageUrl:'blank'}]
+    //get cart data from cartSlice
+    const cartItems = [{title: 'item1', price: 100, quantity: 3, description: 'rig1', imageUrl:'blank'}]
 
   const handleCheckout = async (e) => {
     e.preventDefault();
