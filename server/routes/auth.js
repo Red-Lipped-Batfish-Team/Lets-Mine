@@ -7,7 +7,6 @@ const {
 
 /**
  * Authenticate a User
- * TODO: autheticate a user credential in db and create a session
  */
 // Password
 router.post("/", authenticateUser, (req, res) => {
@@ -15,7 +14,7 @@ router.post("/", authenticateUser, (req, res) => {
 });
 
 router.post("/session", validateSession, (req, res) => {
-  return res.status(200).json({ isValid: res.locals.isValid });
+  return res.status(200).json({ userId: res.locals.userId });
 });
 
 module.exports = router;

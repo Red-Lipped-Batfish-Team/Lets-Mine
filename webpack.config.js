@@ -41,6 +41,7 @@ module.exports = {
     proxy: {
       "/api/**": "http://localhost:3000/",
       "/auth": "http://localhost:3000/",
+      "/auth/session": "http://localhost:3000/",
     },
   },
 };

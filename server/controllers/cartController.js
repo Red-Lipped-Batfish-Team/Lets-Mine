@@ -45,8 +45,27 @@ cartController.getCart = async (req, res, next) => {
   }
 };
 
+// Get User Carts Controller
+cartController.getUserCart = async (req, res, next) => {
+  const userId = req.params.id;
+
+  try {
+    const getQuery = `
+    SELECT * FROM cart WHERE borrower_id = ${userId}
+    `;
+    const cart = await db.query(getQuery);
+
+    res.locals.userCart = cart.rows;
+
+    return next();
+  } catch (err) {
+    return res.status(400).send(err.message);
+  }
+};
+
 // Post a Cart Controller
 cartController.postCart = async (req, res, next) => {
+  console.log(req.body);
   try {
     const schema = [
       "borrower_id",
@@ -148,6 +167,42 @@ cartController.deleteCart = async (req, res, next) => {
 
     res.locals.cartId = cart.rows[0].id;
 
+    return next();
+  } catch (err) {
+    return res.status(400).send(err.message);
+  }
+};
+
+// Delete a Cart Controller
+cartController.deleteUserCart = async (req, res, next) => {
+  const userId = req.params.id;
+
+  try {
+    const getQuery = `
+    SELECT * FROM cart WHERE borrower_id = ${userId}
+    `;
+    const response = await db.query(getQuery);
+    const ids = response.rows.map((cart) => {
+      return cart.id;
+    });
+
+    const deletedCarts = [];
+    for await (const id of ids) {
+      const deleteQuery = `
+        DELETE FROM cart WHERE id = ${id}
+        RETURNING id
+        `;
+
+      const cart = await db.query(deleteQuery);
+
+      if (cart.rows.length === 0) {
+        throw new Error(`No cart with id of ${id} found!`);
+      }
+
+      deletedCarts.push(id);
+    }
+
+    res.locals.deletedCarts = deletedCarts;
     return next();
   } catch (err) {
     return res.status(400).send(err.message);
