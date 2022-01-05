@@ -45,27 +45,8 @@ cartController.getCart = async (req, res, next) => {
   }
 };
 
-// Get User Carts Controller
-cartController.getUserCart = async (req, res, next) => {
-  const userId = req.params.id;
-
-  try {
-    const getQuery = `
-    SELECT * FROM cart WHERE borrower_id = ${userId}
-    `;
-    const cart = await db.query(getQuery);
-
-    res.locals.userCart = cart.rows;
-
-    return next();
-  } catch (err) {
-    return res.status(400).send(err.message);
-  }
-};
-
 // Post a Cart Controller
 cartController.postCart = async (req, res, next) => {
-  console.log(req.body);
   try {
     const schema = [
       "borrower_id",
@@ -173,45 +154,9 @@ cartController.deleteCart = async (req, res, next) => {
   }
 };
 
-// Delete a Cart Controller
-cartController.deleteUserCart = async (req, res, next) => {
-  const userId = req.params.id;
-
-  try {
-    const getQuery = `
-    SELECT * FROM cart WHERE borrower_id = ${userId}
-    `;
-    const response = await db.query(getQuery);
-    const ids = response.rows.map((cart) => {
-      return cart.id;
-    });
-
-    const deletedCarts = [];
-    for await (const id of ids) {
-      const deleteQuery = `
-        DELETE FROM cart WHERE id = ${id}
-        RETURNING id
-        `;
-
-      const cart = await db.query(deleteQuery);
-
-      if (cart.rows.length === 0) {
-        throw new Error(`No cart with id of ${id} found!`);
-      }
-
-      deletedCarts.push(id);
-    }
-
-    res.locals.deletedCarts = deletedCarts;
-    return next();
-  } catch (err) {
-    return res.status(400).send(err.message);
-  }
-};
-
 cartController.checkoutCart = async (req, res, next) => {
   const domainURL = process.env.WEB_APP_URL;
-  const { line_items, customer_email, cartId } = req.body;
+  const { line_items, customer_email } = req.body;
   console.log(req.body);
   //check req.body
   if (!line_items || !customer_email) {
@@ -228,9 +173,7 @@ cartController.checkoutCart = async (req, res, next) => {
       mode: "payment",
       line_items,
       customer_email,
-      client_reference_id: cartId,
-      // success_url: `${domainURL}/success`,
-      success_url: `${domainURL}/success?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${domainURL}/success`,
       cancel_url: `${domainURL}/canceled`,
     });
     res.locals.sessionId = session.id;
@@ -240,5 +183,4 @@ cartController.checkoutCart = async (req, res, next) => {
     res.status(400).json({ error: "chekout cart middleware error" });
   }
 };
-
 module.exports = cartController;
