@@ -1,8 +1,5 @@
 import React from "react";
-// import "./App.css";
-// import Home from "./pages";
-// import About from "./pages/about";
-// import Contact from "./pages/contact";
+import "./App.css";
 import {
   BrowserRouter as Router,
   Routes,
@@ -16,6 +13,9 @@ import CartPage from "./routes/CartPage";
 import Checkout from "./components/Checkout";
 import SuccessPage from "./routes/SuccessPage";
 import CanceledPage from "./routes/CanceledPage";
+import AboutPage from "./routes/AboutPage";
+import ContactPage from "./routes/ContactPage";
+import HomePage from "./routes/HomePage";
 
 const App = () => {
   return (
@@ -23,14 +23,9 @@ const App = () => {
       <Navbar />
       <div className="container">
         <Routes>
-          <Route
-            path="/"
-            element={
-              <>
-                <h1>Hello World!</h1>
-              </>
-            }
-          ></Route>
+          <Route path='/' element={<HomePage />}></Route>
+          <Route path='/about' element={<AboutPage />}></Route>
+          <Route path='/contact' element={<ContactPage />}></Route>
           <Route path="/login" element={<LoginPage />}></Route>
           <Route path="/signup" element={<SignupPage />}></Route>
           <Route path="/marketplace" element={<MarketContainer />}></Route>
