@@ -21,9 +21,9 @@ const App = () => {
       <Navbar />
       <div className="container">
         <Routes>
-          <Route path='/' element={<HomePage />}></Route>
-          <Route path='/about' element={<AboutPage />}></Route>
-          <Route path='/contact' element={<ContactPage />}></Route>
+          {/* <Route path='/' element={<HomePage />}></Route> */}
+          {/* <Route path='/about' element={<AboutPage />}></Route> */}
+          {/* <Route path='/contact' element={<ContactPage />}></Route> */}
           <Route path="/login" element={<LoginPage />}></Route>
           <Route path="/signup" element={<SignupPage />}></Route>
           <Route path="/marketplace" element={<MarketContainer />}></Route>
