@@ -14,9 +14,9 @@ const CartPage = () => {
     const getCarts = async () => {
       const userId = await getUserId();
 
-      const res = await axios.get(`/api/carts/user/${userId}`);
+      const res = await axios.get(`/api/items/user/${userId}`);
 
-      const cart = res.data.userCart;
+      const cart = res.data.userItem;
       setCarts(cart);
     };
 
