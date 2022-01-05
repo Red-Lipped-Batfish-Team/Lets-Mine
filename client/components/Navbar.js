@@ -71,7 +71,7 @@
 
 // export default Navbar;
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Nav,
   NavLink,
@@ -80,27 +80,28 @@ import {
   NavBtn,
   NavBtnLink,
 } from "./NavBarElements";
+import getUserId from "../snippets/getUserId";
+import { useSelector, useDispatch } from "react-redux";
+import { setUser, clearUser } from "../features/user/userSlice";
+import { clearToken } from "../features/authToken/tokenSlice";
 //import logo from '../images/redlipfish.jpg';
 //import logo from '../images/redlipfish.png';
 
-
 const Navbar = () => {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.user);
 
-  // const navigate = useNavigate();
-  // const count = useSelector((state) => state.cart.quantity);
-  
-   //const handleSignOut = () => {
-   //signout user
-   ///clear local storage
-  
-  //redirect to homepage
-   //navigate("/");
-  //   };
+  const handleSignOut = () => {
+    // dispatch(clearToken);
+    sessionStorage.clear();
+    dispatch(clearUser(false));
+  };
+
   return (
     <>
       <Nav>
-        <NavLink to="/">  
-        <h1>Logo</h1>
+        <NavLink to="/">
+          <h1>Logo</h1>
           {/* <img src={require('../images/redlipfish.png')} 
           alt="logo"/> */}
         </NavLink>
@@ -112,16 +113,32 @@ const Navbar = () => {
           <NavLink to="/contact" activeStyle>
             Contact Us
           </NavLink>
+
+          {user && (
+            <NavLink to="/marketplace" activeStyle>
+              Buy
+            </NavLink>
+          )}
+
+          {user && (
+            <NavLink to="/seller" activeStyle>
+              Sell
+            </NavLink>
+          )}
+
           <NavLink to="/cart" activeStyle>
             Cart
           </NavLink>
-          <NavLink to="/signup" activeStyle>
+          {/* <NavLink to="/signup" activeStyle>
             Signup
-          </NavLink>
-          <NavLink to="/" activeStyle>
-            Signout
-          </NavLink>
-          <NavBtnLink to="/login">Sign In</NavBtnLink>
+          </NavLink> */}
+          {user ? (
+            <NavBtnLink to="/" onClick={handleSignOut} activeStyle>
+              Sign out
+            </NavBtnLink>
+          ) : (
+            <NavBtnLink to="/signup">Sign Up</NavBtnLink>
+          )}
         </NavMenu>
       </Nav>
     </>

@@ -11,7 +11,16 @@ import axios from "axios";
  * @param {String} props.size
  */
 const Card = ({ props }) => {
-  const { id, header, quantity, size, duration, hashrate_id } = props;
+  const {
+    id,
+    header,
+    quantity,
+    size,
+    duration,
+    hashrate_id,
+    cartItems,
+    setCartItems,
+  } = props;
 
   const [currQuantity, setCurrQuantity] = useState(1);
   const [currDuration, setCurrDuration] = useState(1);
@@ -60,7 +69,7 @@ const Card = ({ props }) => {
     };
 
     const res = await axios.post("/api/carts/", cart);
-    setIsAdded[true];
+    setCartItems([...cartItems]);
     console.log(res);
   };
 
@@ -81,7 +90,7 @@ const Card = ({ props }) => {
     };
     getItems();
     //get user id and check all items from user and compare against the current item id, if there set isAdded to true
-  }, [isAdded]);
+  }, [cartItems]);
 
   return (
     <>
