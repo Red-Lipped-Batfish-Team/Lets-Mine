@@ -1,10 +1,6 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./App.css";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import MarketContainer from "./routes/MarketPage";
 import LoginPage from "./routes/LoginPage";
@@ -15,16 +11,37 @@ import SuccessPage from "./routes/SuccessPage";
 import CanceledPage from "./routes/CanceledPage";
 import SellerPage from "./routes/SellerPage";
 import SellerForm from "./components/SellerForm";
+import HomePage from "./routes/HomePage";
+import AboutPage from "./routes/AboutPage";
+import ContactPage from "./routes/ContactPage";
+import { useSelector, useDispatch } from "react-redux";
+import getUserId from "./snippets/getUserId";
+import { setUser } from "./features/user/userSlice";
 
 const App = () => {
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.user);
+
+  useEffect(() => {
+    const getUser = async () => {
+      const userId = await getUserId();
+      console.log(userId);
+      if (userId) {
+        dispatch(setUser(true));
+      }
+      console.log(user);
+    };
+    getUser();
+  });
+
   return (
     <Router>
       <Navbar />
       <div className="container">
         <Routes>
-          {/* <Route path='/' element={<HomePage />}></Route> */}
-          {/* <Route path='/about' element={<AboutPage />}></Route> */}
-          {/* <Route path='/contact' element={<ContactPage />}></Route> */}
+          <Route path="/" element={<HomePage />}></Route>
+          <Route path="/about" element={<AboutPage />}></Route>
+          <Route path="/contact" element={<ContactPage />}></Route>
           <Route path="/login" element={<LoginPage />}></Route>
           <Route path="/signup" element={<SignupPage />}></Route>
           <Route path="/marketplace" element={<MarketContainer />}></Route>
