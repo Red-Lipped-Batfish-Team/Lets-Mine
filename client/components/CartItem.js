@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Button, Card, CardActionArea } from "@material-ui/core";
 //import icons minus, plus, and trash icon
@@ -13,6 +13,7 @@ const CartItem = ({ props }) => {
 
   // console.log(item);
   // const {title, imageURl, price, quantity} = products
+
   return (
   <div>
     <ul>

@@ -8,7 +8,7 @@ const StripeCheckout = () => {
     
     //get cart & cartID data from cartSlice
     const cartItems = [{title: 'item1', price: 100, quantity: 3, description: 'rig1', imageUrl:'blank'}]
-    const cartId = 5;
+    const cartId = 2;
 
 
   const handleCheckout = async (e) => {
