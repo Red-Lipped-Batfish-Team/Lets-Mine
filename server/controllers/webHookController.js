@@ -22,24 +22,25 @@ const webHookController = async (req, res) => {
     const userId = session.client_reference_id;
     console.log('!!! Returned userID: ', userId);
 
-    let carts = [];
-
     const queryUserCarts = async () => {
       try {
         const queryAllCarts = `
         SELECT * FROM cart WHERE borrower_id = '${userId}'
         `;
         const res = await db.query(queryAllCarts);
-        console.log('!!! Returned res: ', res);
+        const carts = res.rows;
+        console.log('!!! Returned carts: ', carts);
 
-        cart = res.rows;
+
+
+        
       } catch(err) {
         throw new Error(`Error occurred in Webhooks db call for all carts. ERROR: ${err}.`);
       }
     }
     
     queryUserCarts();
-    console.log('!!! Returned carts: ', carts);
+    
 
 
   }
