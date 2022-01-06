@@ -10,7 +10,6 @@ const CartItem = ({ props }) => {
   //update the quantity of that item
   //
 
-
   // console.log(item);
   // const {title, imageURl, price, quantity} = products
 
@@ -21,11 +20,11 @@ const CartItem = ({ props }) => {
       <li>quantity: {quantity}</li>
       <li>amount: {amount}</li>
     </ul>
-    <Link to='/checkout'>
+    {/* <Link to='/checkout'>
         <div>
           <Button>Checkout</Button>
         </div>
-      </Link>
+      </Link> */}
   </div>);
 };
 
