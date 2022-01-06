@@ -9,15 +9,19 @@ const CartPage = () => {
   //api request to get the cart id or check cart state
   // const cart = [2, 2, 2, 2];
   const [carts, setCarts] = useState([]);
+  const [fetching, setFetching] = useState(false);
+
 
   useEffect(() => {
     const getCarts = async () => {
+      setFetching(true);
       const userId = await getUserId();
 
       const res = await axios.get(`/api/carts/user/${userId}`);
 
       const cart = res.data.userCart;
       setCarts(cart);
+      setFetching(false);
     };
 
     getCarts();
@@ -25,8 +29,13 @@ const CartPage = () => {
   /**
    * TODO: Render tems
    */
-  carts.map((item) => console.log(item));
+  console.log('This is the carts: ',carts);
+  // carts.map((item) => console.log(item));
+  // carts.map((item, ind) => {
+  //         <CartItem key={ind} item={item} />;
+  //       })
   return (
+    <>
     <div    
       style={{
       display: "flex",
@@ -35,15 +44,14 @@ const CartPage = () => {
       height: "90vh",
     }}>
       <h2>Cart</h2>
-      {carts.length === 0 ? (
-        <div>"Cart is Empty"</div>
-      ) : (
-        carts.map((item, ind) => {
-          <CartItem key={ind} item={item} />;
-        })
-      )}
-      {/* <CartTotal /> */}
-    </div>
+
+      {fetching ? (
+        <h4>Fetching..</h4>
+      ) : carts.length !== 0 ? (
+        carts.map((item, idx) => <CartItem key={idx} props={item} />)
+      ) : <h4>Cart is empty...</h4>}
+      </div>
+    </>
   );
 };
 

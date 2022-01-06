@@ -1,5 +1,5 @@
 import React from 'react'
-import StripeCheckout from './StripeCheckout';
+import StripeCheckout from '../components/StripeCheckout';
 
 const Checkout = () => {
     //get item count and cart total
