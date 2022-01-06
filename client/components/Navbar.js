@@ -7,10 +7,8 @@ import {
   NavBtn,
   NavBtnLink,
 } from "./NavBarElements";
-import getUserId from "../snippets/getUserId";
 import { useSelector, useDispatch } from "react-redux";
-import { setUser, clearUser } from "../features/user/userSlice";
-import { clearToken } from "../features/authToken/tokenSlice";
+import { clearUser } from "../features/user/userSlice";
 //import logo from '../images/redlipfish.jpg';
 //import logo from '../images/redlipfish.png';
 

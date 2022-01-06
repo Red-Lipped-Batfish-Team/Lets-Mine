@@ -65,7 +65,7 @@ const Card = ({ props }) => {
       item_id: id,
       quantity: currQuantity,
       rental_duration: currDuration,
-      amount: price,
+      amount: price.toFixed(2),
     };
 
     const res = await axios.post("/api/carts/", cart);
@@ -80,7 +80,6 @@ const Card = ({ props }) => {
       const userId = await getUserId();
 
       const res = await axios.get(`/api/carts/user/${userId}`);
-      console.log("useEffect:", res);
       //check against current item id
       res.data.userCart.map((elem) => {
         if (elem.item_id === id) {
