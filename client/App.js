@@ -10,7 +10,7 @@ import Checkout from "./routes/Checkout";
 import SuccessPage from "./routes/SuccessPage";
 import CanceledPage from "./routes/CanceledPage";
 import SellerPage from "./routes/SellerPage";
-import SellerForm from "./components/SellerForm";
+import SellerForm from "./routes/SellerForm";
 import HomePage from "./routes/HomePage";
 import AboutPage from "./routes/AboutPage";
 import ContactPage from "./routes/ContactPage";
