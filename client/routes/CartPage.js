@@ -11,7 +11,6 @@ const CartPage = () => {
   const [carts, setCarts] = useState([]);
   const [fetching, setFetching] = useState(false);
 
-
   useEffect(() => {
     const getCarts = async () => {
       setFetching(true);
@@ -29,27 +28,30 @@ const CartPage = () => {
   /**
    * TODO: Render tems
    */
-  console.log('This is the carts: ',carts);
+  console.log("This is the carts: ", carts);
   // carts.map((item) => console.log(item));
   // carts.map((item, ind) => {
   //         <CartItem key={ind} item={item} />;
   //       })
   return (
     <>
-    <div    
-      style={{
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "top",
-      height: "90vh",
-    }}>
-      <h2>Cart</h2>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "top",
+          height: "90vh",
+        }}
+      >
+        <h2>Cart</h2>
 
-      {fetching ? (
-        <h4>Fetching..</h4>
-      ) : carts.length !== 0 ? (
-        carts.map((item, idx) => <CartItem key={idx} props={item} />)
-      ) : <h4>Cart is empty...</h4>}
+        {fetching ? (
+          <h4>Fetching..</h4>
+        ) : carts.length !== 0 ? (
+          carts.map((item, idx) => <CartItem key={idx} props={item} />)
+        ) : (
+          <h4>Cart is empty...</h4>
+        )}
       </div>
     </>
   );
