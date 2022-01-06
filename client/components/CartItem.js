@@ -1,5 +1,6 @@
 import React from "react";
-import { Card, CardActionArea } from "@material-ui/core";
+import { Link } from "react-router-dom";
+import { Button, Card, CardActionArea } from "@material-ui/core";
 //import icons minus, plus, and trash icon
 
 const CartItem = ({ props }) => {
@@ -15,10 +16,15 @@ const CartItem = ({ props }) => {
   return (
   <div>
     <ul>
-      <li>item: {item}</li>
+      <li>item: {item_id}</li>
       <li>quantity: {quantity}</li>
       <li>amount: {amount}</li>
     </ul>
+    <Link to='/checkout'>
+        <div>
+          <Button>Checkout</Button>
+        </div>
+      </Link>
   </div>);
 };
 
