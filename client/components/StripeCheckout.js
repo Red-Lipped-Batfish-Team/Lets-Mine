@@ -2,7 +2,7 @@ import React, {useState } from "react";
 import { useStripe } from "@stripe/react-stripe-js";
 import axios from "axios";
 
-const StripeCheckout = () => {
+const StripeCheckout = ({}) => {
   const [email, setEmail] = useState("");
     const stripe = useStripe();
     
