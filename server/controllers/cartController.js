@@ -51,7 +51,11 @@ cartController.getUserCart = async (req, res, next) => {
 
   try {
     const getQuery = `
-    SELECT * FROM cart WHERE borrower_id = ${userId}
+    SELECT c.*, i.model
+    FROM cart c
+    JOIN item i
+    ON c.item_id = i.id
+    WHERE c.borrower_id = ${userId}
     `;
     const cart = await db.query(getQuery);
 
@@ -222,7 +226,7 @@ cartController.checkoutCart = async (req, res, next) => {
   let session;
 
   try {
-    console.log(cartId)
+    console.log(cartId);
     session = await stripeAPI.checkout.sessions.create({
       payment_method_types: ["card"],
       mode: "payment",
