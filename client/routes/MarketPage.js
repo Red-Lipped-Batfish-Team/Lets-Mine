@@ -10,7 +10,6 @@ const MarketContainer = () => {
     const getItems = async () => {
       setFetching(true);
       const items = await axios.get("/api/items").then((res) => res.data.items);
-      console.log(items);
       setItems(items);
       setFetching(false);
     };

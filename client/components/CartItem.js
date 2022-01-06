@@ -10,7 +10,6 @@ const CartItem = ({ props }) => {
   //update the quantity of that item
   //
 
-
   // console.log(item);
   // const {title, imageURl, price, quantity} = products
   return (
