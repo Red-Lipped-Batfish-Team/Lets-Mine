@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect, useRef} from "react";
 import { Link } from "react-router-dom";
 import {
   Button,
@@ -10,47 +10,69 @@ import {
   IconButton,
 } from "@material-ui/core";
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
-import getItemHashRate from "../snippets/getItem";
 import getCoinPrice from "../snippets/getCoinPrice";
+import axios from "axios"
 
-const CartItem = ({ props }) => {
-  const { id, amount, expired, item_id, quantity, rental_duration, model } =
-    props;
+const CartItem = ({ props, setTotalQuantity, setTotalDuration, totalDuration, totalQuantity }) => {
+  const {
+    id,
+    amount,
+    expired,
+    item_id,
+    quantity,
+    rental_duration,
+    model,
+    max_duration,
+    max_quantity,
+    hashrate_id
+  } = props;
 
-  //new quantity and duration state to be updated
+  const [cartItemQuantity, setCartItemQuantity] = useState(quantity)
+  const [cartItemDuration, setCartItemDuration] = useState(rental_duration);
+  const [cartItemTotalPrice, setCartItemTotalPrice] = useState(amount);
 
-  //item id
-  //increase button would update the cart by searching by item id in cart id
-  //update the quantity of that item
-  //
+  const itemPrice = useRef(0)
 
-  const handleCartIncreaseQuantity = () => {
-    if (maxItemQuantity < quantity) {
+  useEffect(() => {
+    const getItemPrice = async () => {
+      itemPrice = await getCoinPrice(hashrate_id);
+    };
+  })
+  
+
+  const handleCartIncreaseQuantity = async () => {
+    if (quantity<max_quantity ) {
+      let newQuantity = quantity 
+      newQuantity += 1
       let newQuantity = quantity;
-      return setCurrQuantity((newQuantity += 1));
+      newQuantity += 1;
+      const res = await axios.patch(`/api/carts/${id}`, {quantity: newQuantity});
+      console.log(res)
+      setCartItemQuantity((newQuantity));
+      setTotalQuantity(newQuantity)
     }
   };
 
-  const handleCartDecreaseQuantity = () => {
-    if (quantity > 1) {
-      let newQuantity = quantity;
-      return setCurrQuantity((newQuantity -= 1));
-    }
-  };
+  // const handleCartDecreaseQuantity = () => {
+  //   if (quantity > 1) {
+  //     let newQuantity = quantity;
+  //     return setCurrQuantity((newQuantity -= 1));
+  //   }
+  // };
 
-  const handleCartIncreaseDuration = () => {
-    if (currDuration < duration) {
-      let newDurr = currDuration;
-      return setCurrDuration((newDurr += 1));
-    }
-  };
+  // const handleCartIncreaseDuration = () => {
+  //   if (rental_duration < max_duration) {
+  //     let newDurr = currDuration;
+  //     return setCurrDuration((newDurr += 1));
+  //   }
+  // };
 
-  const handleCartDecreaseDuration = () => {
-    if (currDuration > 1) {
-      let newDurr = currDuration;
-      return setCurrDuration((newDurr -= 1));
-    }
-  };
+  // const handleCartDecreaseDuration = () => {
+  //   if (duration > 1) {
+  //     let newDurr = currDuration;
+  //     return setCurrDuration((newDurr -= 1));
+  //   }
+  // };
 
   return (
     <div>
@@ -66,15 +88,15 @@ const CartItem = ({ props }) => {
         />
         <CardContent>
           <Typography variant="body2">
-            Quantity: {quantity}
-            <Button size="small" color="primary">
+            Quantity: {cartItemQuantity}
+            <Button size="small" color="primary" onClick={handleCartIncreaseQuantity}>
               +
             </Button>
             <Button size="small" color="primary">
               -
             </Button>
             <br />
-            Duration: {rental_duration}
+            Duration: {cartItemDuration}
             <Button size="small" color="primary">
               +
             </Button>
