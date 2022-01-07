@@ -60,7 +60,8 @@ const CartPage = () => {
         {fetching ? (
           <h4>Fetching..</h4>
         ) : carts.length !== 0 ? (
-          carts.map((item, idx) => <CartItem key={idx} props={item} />)
+            carts.map((item, idx) => <CartItem key={idx} props={item} totalPrice={totalPrice}
+              totalQuantity={totalQuantity}/>)
         ) : (
           <h4>Cart is empty...</h4>
         )}

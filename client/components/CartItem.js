@@ -12,7 +12,6 @@ import {
 import HighlightOffIcon from "@material-ui/icons/HighlightOff";
 import getItemHashRate from "../snippets/getItem";
 import getCoinPrice from "../snippets/getCoinPrice";
-//import icons minus, plus, and trash icon
 
 const CartItem = ({ props }) => {
   const { id, amount, expired, item_id, quantity, rental_duration, model } =
