@@ -215,7 +215,7 @@ cartController.deleteUserCart = async (req, res, next) => {
 
 cartController.checkoutCart = async (req, res, next) => {
   const domainURL = process.env.WEB_APP_URL;
-  const { line_items, customer_email, cartId } = req.body;
+  const { line_items, customer_email, userId } = req.body;
   console.log(req.body);
   //check req.body
   if (!line_items || !customer_email) {
@@ -226,13 +226,12 @@ cartController.checkoutCart = async (req, res, next) => {
   let session;
 
   try {
-    console.log(cartId);
     session = await stripeAPI.checkout.sessions.create({
       payment_method_types: ["card"],
       mode: "payment",
       line_items,
       customer_email,
-      client_reference_id: cartId,
+      client_reference_id: userId,
       success_url: `${domainURL}/success`,
       cancel_url: `${domainURL}/canceled`,
     });
