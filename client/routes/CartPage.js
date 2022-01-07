@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import CartItem from "../components/CartItem";
-import CartTotal from "../components/CartTotal";
 import axios from "axios";
 import getUserId from "../snippets/getUserId";
-import { Card, CardActionArea } from "@material-ui/core";
 import Checkout from "./Checkout";
+import { useDispatch, useSelector } from "react-redux";
+import { updateTotal, resetTotal } from "../features/cart/cartSlice";
 
 const CartPage = () => {
   //api request to get the cart id or check cart state
@@ -14,20 +14,8 @@ const CartPage = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const [totalQuantity, setTotalQuantity] = useState(0);
   const [totalDuration, setTotalDuration] = useState(0);
-
-  const getTotals = () => {
-    let quantity = 0;
-    let price = 0;
-    let duration = 0
-    carts.map((elem) => {
-      quantity += elem.quantity;
-      price += elem.amount;
-      duration += elem.rental_duration
-    });
-    setTotalPrice(price);
-    setTotalQuantity(quantity);
-    setTotalDuration(duration);
-  };
+  const [update, setUpdate] = useState();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const getCarts = async () => {
@@ -35,20 +23,25 @@ const CartPage = () => {
       const userId = await getUserId();
 
       const res = await axios.get(`/api/carts/user/${userId}`);
-
+      // dispatch(resetTotal);
       const cart = res.data.userCart;
+      console.log(cart);
+      cart.map((elem) => {
+        dispatch(
+          updateTotal({
+            duration: elem.rental_duration,
+            quantity: elem.quantity,
+            price: elem.amount,
+          })
+        );
+      });
+
       setCarts(cart);
       setFetching(false);
     };
     getCarts();
-  }, [totalDuration, totalQuantity]);
-  /**
-   * TODO: Render tems
-   */
-  // carts.map((item) => console.log(item));
-  // carts.map((item, ind) => {
-  //         <CartItem key={ind} item={item} />;
-  //       })
+  }, []);
+
   return (
     <>
       <div
@@ -68,27 +61,20 @@ const CartPage = () => {
             <CartItem
               key={idx}
               props={item}
-              setTotalPrice={setTotalPrice}
-              setTotalQuantity={setTotalQuantity}
-              setTotalDuration={setTotalDuration}
-              totalPrice={totalPrice}
-              totalQuantity={totalQuantity}
-              totalDuration={totalDuration}
+              setUpdate={setUpdate}
+              // cartItemDuration={cartItemDuration}
+              // cartItemQuantity={cartItemQuantity}
+              // cartItemTotalPrice={cartItemTotalPrice}
+              // setCartItemDuration={setCartItemDuration}
+              // setCartItemQuantity={setCartItemQuantity}
+              // setCartItemTotalPrice={setCartItemTotalPrice}
             />
           ))
         ) : (
           <h4>Cart is empty...</h4>
         )}
 
-        {carts.length !== 0 && (
-          <Checkout
-            getTotals={getTotals}
-            totalPrice={totalPrice}
-            totalQuantity={totalQuantity}
-            totalDuration={totalDuration}
-            carts={carts}
-          />
-        )}
+        {carts.length !== 0 && <Checkout carts={carts} />}
       </div>
     </>
   );
