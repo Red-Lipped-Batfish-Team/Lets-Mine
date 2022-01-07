@@ -6,9 +6,9 @@ const StripeCheckout = ({}) => {
   const [email, setEmail] = useState("");
     const stripe = useStripe();
     
-    //get cart & cartID data from cartSlice
+    //get cart & userId data from cartSlice
     const cartItems = [{title: 'item1', price: 100, quantity: 3, description: 'rig1', imageUrl:'blank'}]
-    const cartId = 5;
+    const userId = 2;
 
 
   const handleCheckout = async (e) => {
@@ -45,7 +45,7 @@ const StripeCheckout = ({}) => {
 
     try {
       const result = await axios.post("/api/carts/checkout", {
-        line_items, customer_email: email, cartId,
+        line_items, customer_email: email, userId,
       });
       console.log(result.data);
       const { sessionId } = result.data;
