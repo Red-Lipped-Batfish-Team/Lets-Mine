@@ -14,7 +14,6 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setToken } from "../features/authToken/tokenSlice";
 import { setUser } from "../features/user/userSlice";
-//import icons
 
 const useStyles = makeStyles({
   //used to create diff styling for specific items
