@@ -51,7 +51,7 @@ cartController.getUserCart = async (req, res, next) => {
 
   try {
     const getQuery = `
-    SELECT c.*, i.model, i.quantity as max_quantity, i.duration as max_duration
+    SELECT c.*, i.model, i.quantity as max_quantity, i.duration as max_duration, i.	hashrate_id
     FROM cart c
     JOIN item i
     ON c.item_id = i.id
