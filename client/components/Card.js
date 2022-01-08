@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import getUserId from "../snippets/getUserId";
 import getCoinPrice from "../snippets/getCoinPrice";
 import axios from "axios";
@@ -35,6 +35,7 @@ const Card = ({ props }) => {
 
   const [currQuantity, setCurrQuantity] = useState(1);
   const [currDuration, setCurrDuration] = useState(1);
+  const [price, setPrice] = useState(1);
   const [isAdded, setIsAdded] = useState(false);
   const dispatch=useDispatch()
 
@@ -84,9 +85,11 @@ const Card = ({ props }) => {
     setCartItems([...cartItems]);
     dispatch(addToCart({quantity: currQuantity}))
   };
-
+  const coinPrice = useRef(0)
+  
   useEffect(() => {
     const getItems = async () => {
+      const coinPrice = await getCoinPrice(hashrate_id);
       const userId = await getUserId();
 
       const res = await axios.get(`/api/carts/user/${userId}`);
@@ -96,8 +99,10 @@ const Card = ({ props }) => {
           setIsAdded(true);
         }
       });
+      setPrice(Math.trunc(coinPrice))
     };
     getItems();
+    
   }, [cartItems]);
 
   return (
@@ -115,6 +120,7 @@ const Card = ({ props }) => {
           title={model}
         />
         <CardContent align="center">
+          <Typography variant="body2">Tier: {hashrate_id}</Typography>
           <Typography variant="body2">Quantity: {currQuantity}</Typography>
           <ButtonGroup className="mb-2">
             <Button variant="contained" onClick={handleIncreaseQuantity}>
@@ -128,7 +134,7 @@ const Card = ({ props }) => {
           </ButtonGroup>
 
           <Typography variant="body2">Duration: {currDuration}</Typography>
-          <ButtonGroup >
+          <ButtonGroup>
             <Button variant="contained" onClick={handleIncreaseDuration}>
               {" "}
               +
@@ -138,7 +144,9 @@ const Card = ({ props }) => {
               -
             </Button>
           </ButtonGroup>
-
+          <Typography variant="body2">
+            Price: {price}
+          </Typography>
           <div className="mt-2">
             {isAdded ? (
               <Button
