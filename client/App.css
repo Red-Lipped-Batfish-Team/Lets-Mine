@@ -5,4 +5,14 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    /* color: white; */
 }
+
+body {
+    /* background-image: url("https://1000blocks.space/img/space.d5d5bf10.jpg"); */
+    background-image: url("https://cutewallpaper.org/21/white-galaxy-background/PAPERSco-Android-wallpaper-md64-star-white-space-galaxy.jpg");
+    /* background-image: url("http://orionquartzsurfaces.com/wp-content/uploads/2019/08/IMG_2777-Galaxy-White-Orion-Quartz2-SLAB-WEB-1024x512.jpg"); */
+
+    background-size: cover;
+}
+
