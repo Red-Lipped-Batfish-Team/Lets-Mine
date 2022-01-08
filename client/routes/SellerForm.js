@@ -30,19 +30,18 @@ const useStyles = makeStyles({
   },
 });
 
+
 const SellerForm = () => {
   const [hashrateData, setHashrateData] = useState([]);
   const [hashrate_id, setHashrateId] = useState("");
-  const [lender_id, setLenderId] = useState("");
   const [model, setModel] = useState("");
   const [quantity, setQuantity] = useState(0);
   const [duration, setDuration] = useState(0);
   const [modelError, setModelError] = useState(false);
   const [quantityError, setQuantityError] = useState(false);
   const [durationError, setDurationError] = useState(false);
-  const classes = useStyles();
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const classes = useStyles();
 
   useEffect(() => {
     const getHashRate = async () => {
@@ -82,7 +81,6 @@ const SellerForm = () => {
         }
       });
       }
-      console.log(userPayload);
       setModel('');
       setQuantity(0);
       setDuration(0);

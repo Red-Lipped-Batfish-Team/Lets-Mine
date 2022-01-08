@@ -145,7 +145,7 @@ const Card = ({ props }) => {
             </Button>
           </ButtonGroup>
           <Typography variant="body2">
-            Price: {price}
+            Price: {$price}
           </Typography>
           <div className="mt-2">
             {isAdded ? (
