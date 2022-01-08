@@ -52,7 +52,7 @@ const SuccessPage = () => {
       <div style={{
         display: 'block',
       }}><br/>
-        <p>You should recieve an Email to {user.email} shortly!</p>
+        <p>You should receive an Email to {user.email} shortly!</p>
       </div>
       <Link to="/marketplace">
         <Button variant='contained'>Continue Shopping</Button>
