@@ -36,10 +36,11 @@ const CartItem = ({ props, carts, setCarts}) => {
   useEffect(() => {
     const getItemPrice = async () => {
       itemPrice = await getCoinPrice(hashrate_id);
+      itemPrice = Math.trunc(itemPrice);
     };
     getItemPrice();
   });
-
+  
   const handleCartIncreaseQuantity = async () => {
     if (cartItemQuantity < max_quantity) {
       let newQuantity = cartItemQuantity;
@@ -49,18 +50,18 @@ const CartItem = ({ props, carts, setCarts}) => {
       
       const res = await axios.patch(`/api/carts/${id}`, {
         quantity: newQuantity,
-        amount: newAmount.toFixed(2),
+        amount: newAmount,
       });
       // console.log(res);
       dispatch(
         updateTotal({
           duration: 0,
           quantity: 1,
-          price: itemPrice.toFixed(2),
+          price: itemPrice,
         })
       );
       setCartItemQuantity(newQuantity);
-      setCartItemTotalPrice(newAmount.toFixed(2));
+      setCartItemTotalPrice(newAmount);
     }
   };
 
@@ -73,23 +74,23 @@ const CartItem = ({ props, carts, setCarts}) => {
 
       const res = await axios.patch(`/api/carts/${id}`, {
         quantity: newQuantity,
-        amount: newAmount.toFixed(2),
+        amount: newAmount,
       });
       // console.log(res);
       dispatch(
         updateTotal({
           duration: 0,
           quantity: -1,
-          price: itemPrice.toFixed(2),
+          price: itemPrice,
         })
       );
       setCartItemQuantity(newQuantity);
-      setCartItemTotalPrice(newAmount.toFixed(2));
+      setCartItemTotalPrice(newAmount);
     }
     }
   
 
-  const handleCartIncreaseDuration = async() => {
+  const handleCartIncreaseDuration = async () => {
     if (cartItemDuration < max_duration) {
       let newDuration = cartItemDuration;
       newDuration += 1;
@@ -98,18 +99,18 @@ const CartItem = ({ props, carts, setCarts}) => {
 
       const res = await axios.patch(`/api/carts/${id}`, {
         duration: newDuration,
-        amount: newAmount.toFixed(2),
+        amount: newAmount,
       });
       // console.log(res);
       dispatch(
         updateTotal({
           duration: 1,
           quantity: 0,
-          price: itemPrice.toFixed(2),
+          price: itemPrice,
         })
       );
       setCartItemDuration(newDuration);
-      setCartItemTotalPrice(newAmount.toFixed(2));
+      setCartItemTotalPrice(newAmount);
     }
   };
 
@@ -122,18 +123,18 @@ const CartItem = ({ props, carts, setCarts}) => {
 
       const res = await axios.patch(`/api/carts/${id}`, {
         duration: newDuration,
-        amount: newAmount.toFixed(2),
+        amount: newAmount,
       });
       // console.log(res);
       dispatch(
         updateTotal({
           duration: -1,
           quantity: 0,
-          price: itemPrice.toFixed(2),
+          price: itemPrice,
         })
       );
       setCartItemDuration(newDuration);
-      setCartItemTotalPrice(newAmount.toFixed(2));
+      setCartItemTotalPrice(newAmount);
     }
   };
 

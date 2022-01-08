@@ -22,10 +22,13 @@ export const cartSlice = createSlice({
       state.totalQuantity = 0;
       state.totalDuration = 0;
       state.totalPrice = 0;
+    },
+    addToCart: (state, action) => {
+      state.totalQuantity += action.payload.quantity;
     }
   },
 });
 
-export const { updateTotal, resetTotal } = cartSlice.actions;
+export const { updateTotal, resetTotal, addToCart } = cartSlice.actions;
 
 export default cartSlice.reducer;

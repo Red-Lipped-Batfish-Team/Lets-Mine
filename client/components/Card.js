@@ -3,6 +3,8 @@ import { Button } from "@material-ui/core";
 import getUserId from "../snippets/getUserId";
 import getCoinPrice from "../snippets/getCoinPrice";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../features/cart/cartSlice";
 /**
  *
  * @param {Object} props
@@ -25,6 +27,7 @@ const Card = ({ props }) => {
   const [currQuantity, setCurrQuantity] = useState(1);
   const [currDuration, setCurrDuration] = useState(1);
   const [isAdded, setIsAdded] = useState(false);
+  const dispatch=useDispatch()
 
   const handleIncreaseQuantity = () => {
     if (currQuantity < quantity) {
@@ -57,20 +60,20 @@ const Card = ({ props }) => {
   const handleAddItem = async () => {
     //get user id
     const coinPrice = await getCoinPrice(hashrate_id);
-    const price = coinPrice * (currDuration + currQuantity);
     const userId = await getUserId();
+    const price = coinPrice * (currDuration + currQuantity);
 
     const cart = {
       borrower_id: userId,
       item_id: id,
       quantity: currQuantity,
       rental_duration: currDuration,
-      amount: price.toFixed(2),
+      amount: Math.trunc(price),
     };
 
     const res = await axios.post("/api/carts/", cart);
     setCartItems([...cartItems]);
-    console.log(res);
+    dispatch(addToCart({quantity: currQuantity}))
   };
 
   useEffect(() => {
