@@ -128,7 +128,7 @@ const Card = ({ props }) => {
           </ButtonGroup>
 
           <Typography variant="body2">Duration: {currDuration}</Typography>
-          <ButtonGroup >
+          <ButtonGroup>
             <Button variant="contained" onClick={handleIncreaseDuration}>
               {" "}
               +
