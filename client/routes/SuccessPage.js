@@ -1,5 +1,8 @@
 import React, { useState, useEffect, useNavigate } from "react";
-// const stripe = require('stripe')(process.env.STRIPE_PRIVATE_KEY);
+import getUserId from "../snippets/getUserId";
+import axios from "axios";
+import { Button } from "@material-ui/core";
+import { Link } from "react-router-dom";
 
 const SuccessPage = () => {
   //useEffect
@@ -7,23 +10,56 @@ const SuccessPage = () => {
   //update item inventory
   //delete cart
 
-  const [sessionT, getSession] = useState({});
-  const [customerT, getCustoemr] = useState({});
+  const [session, setSession] = useState({});
+  const [user, setUser] = useState({
+    id: 0,
+    firstName: "",
+    lastName: "",
+    email: "",
+  });
 
   useEffect(() => {
-    // const getStripeInfo = async () => {
-    //   const session = await stripe.checkout.sessions.retrieve(req.query.session_id);
-    //   const customer = await stripe.customers.retrieve(session.customer);
-    // }
+
+    const getUserInfo = async () => {
+      const userId = await getUserId();
+      const userInfo = await axios.get(`/api/users/${userId}`)
+      setUser({
+        id: userInfo.data.user.id,
+        firstName: userInfo.data.user.first_name,
+        lastName: userInfo.data.user.last_name,
+        email: userInfo.data.user.email,
+      })
+    }
+    getUserInfo();
+
   }, [])
 
 
   return (
-  <div>Order confirmation page insert "continue Shopping" button
-    <p>Thanks for your order, 
-      {/* {customer.name} */}
-      !</p>
-  </div>
+    <>
+    <div style={{
+      display: 'block',
+      justifyContent: 'center',
+      height: '90vh',
+      paddingTop: '30px',
+    }}
+    >
+      <div style={{
+        display: 'block',
+      }}>
+      <h4>Thank you for your order, {user.firstName}!</h4>
+      </div>
+      <div style={{
+        display: 'block',
+      }}><br/>
+        <p>You should recieve an Email to {user.email} shortly!</p>
+      </div>
+      <Link to="/marketplace">
+        <Button variant='contained'>Continue Shopping</Button>
+      </Link>
+    </div>
+
+    </>
   )
 };
 
