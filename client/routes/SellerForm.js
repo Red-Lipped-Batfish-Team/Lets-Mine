@@ -14,25 +14,9 @@ import {
 import { makeStyles } from "@material-ui/core";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { setToken } from "../features/authToken/tokenSlice";
-import { setUser } from "../features/user/userSlice";
 import getUserId from "../snippets/getUserId";
 
-/**
- * api: Get hashrate -> /api/hashrates
- * api: Post item -> /api/items
- * Example body:
- * {
- *   "lender_id": 14,
- *   "hashrate_id": 2,
- *   "model": 3,
- *   "quantity": 5
- * }
- *
- */
-
 const useStyles = makeStyles({
-  //used to create diff styling for specific items
   paperStyle: {
     padding: 20,
     minheight: "50vh",
@@ -51,23 +35,22 @@ const SellerForm = () => {
   const [hashrate_id, setHashrateId] = useState("");
   const [lender_id, setLenderId] = useState("");
   const [model, setModel] = useState("");
-  const [quantity, setQuantity] = useState("");
+  const [quantity, setQuantity] = useState(0);
+  const [duration, setDuration] = useState(0);
   const [modelError, setModelError] = useState(false);
   const [quantityError, setQuantityError] = useState(false);
+  const [durationError, setDurationError] = useState(false);
   const classes = useStyles();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  //redirect user back to seller page
 
   useEffect(() => {
     const getHashRate = async () => {
       const hashRate = await axios.get("/api/hashrates");
-      console.log(hashRate);
       setHashrateData(hashRate.data.hashrates);
     };
     getHashRate();
   }, []);
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -80,27 +63,30 @@ const SellerForm = () => {
     if (quantity === "") {
       setQuantityError(true);
     }
-
-    if (hashrate_id && model && quantity) {
+    if (duration === "") {
+      setDurationError(true);
+    }
+    
+    if (hashrate_id && model && quantity && duration) {
+      const userId = await getUserId();
       const userPayload = {
         lender_id: userId,
         hashrate_id,
         model,
         quantity,
+        duration,
       };
       const res = await axios.post("/api/items", userPayload, {
         headers: {
           "Content-Type": "application/json",
         }
       });
-      if (res.data.token) {
-        dispatch(setToken(res.data.token));
-        dispatch(setUser(true));
-        navigate("/seller");
       }
-      }
+      console.log(userPayload);
       setModel('');
-      setQuantity('');
+      setQuantity(0);
+      setDuration(0);
+      navigate("/seller")
     }
 
   return (
@@ -142,8 +128,9 @@ const SellerForm = () => {
                 error={modelError}
               />
               <TextField
-                onChange={(e) => setQuantity(e.target.value)}
+                onChange={(e) => setQuantity(Number(e.target.value))}
                 className={classes.field}
+                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*'}}
                 color="secondary"
                 variant="outlined"
                 label="Quantity"
@@ -151,8 +138,17 @@ const SellerForm = () => {
                 fullWidth
                 error={quantityError}
               />
-              <span className="text-danger">{}</span>
-
+                <TextField
+                onChange={(e) => setDuration(Number(e.target.value))}
+                className={classes.field}
+                inputProps={{ inputMode: 'numeric', pattern: '[0-9]*'}}
+                color="secondary"
+                variant="outlined"
+                label="Duration"
+                required
+                fullWidth
+                error={durationError}
+              />
               <Button type="submit" color="primary" variant="contained">
                 Submit Item
               </Button>
@@ -163,6 +159,5 @@ const SellerForm = () => {
     </Container>
   );
 }
-
 
 export default SellerForm;
