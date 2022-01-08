@@ -68,7 +68,13 @@ itemController.getUserItem = async (req, res, next) => {
 // Post a Item Controller
 itemController.postItem = async (req, res, next) => {
   try {
-    const schema = ["lender_id", "hashrate_id", "model", "quantity"];
+    const schema = [
+      "lender_id",
+      "hashrate_id",
+      "model",
+      "quantity",
+      "duration",
+    ];
     const missingFields = [];
     const params = schema.reduce((arr, field) => {
       if (field in req.body) {
@@ -85,8 +91,8 @@ itemController.postItem = async (req, res, next) => {
       throw new Error(`Following fields are missing [${missingFields}]`);
 
     const query = `
-      INSERT INTO item (lender_id, hashrate_id, model, quantity)
-      VALUES ($1, $2, $3, $4)
+      INSERT INTO item (lender_id, hashrate_id, model, quantity, duration)
+      VALUES ($1, $2, $3, $4, $5)
       RETURNING id
     `;
 
@@ -102,7 +108,7 @@ itemController.postItem = async (req, res, next) => {
 // Patch a Item Controller
 itemController.patchItem = async (req, res, next) => {
   const itemId = req.params.id;
-  const schema = ["lender_id", "hashrate_id", "model", "quantity"];
+  const schema = ["lender_id", "hashrate_id", "model", "quantity", "duration"];
 
   let setValue = schema.reduce((str, field) => {
     if (field in req.body) {
