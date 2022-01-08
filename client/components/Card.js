@@ -35,7 +35,7 @@ const Card = ({ props }) => {
 
   const [currQuantity, setCurrQuantity] = useState(1);
   const [currDuration, setCurrDuration] = useState(1);
-  const [price, setPrice] = useState(1);
+  const [itemPrice, setItemPrice] = useState(1);
   const [isAdded, setIsAdded] = useState(false);
   const dispatch=useDispatch()
 
@@ -85,7 +85,6 @@ const Card = ({ props }) => {
     setCartItems([...cartItems]);
     dispatch(addToCart({quantity: currQuantity}))
   };
-  const coinPrice = useRef(0)
   
   useEffect(() => {
     const getItems = async () => {
@@ -99,7 +98,7 @@ const Card = ({ props }) => {
           setIsAdded(true);
         }
       });
-      setPrice(Math.trunc(coinPrice))
+      setItemPrice(Math.trunc(coinPrice))
     };
     getItems();
     
@@ -145,7 +144,7 @@ const Card = ({ props }) => {
             </Button>
           </ButtonGroup>
           <Typography variant="body2">
-            Price: ${price}
+            Price: ${itemPrice}
           </Typography>
           <div className="mt-2">
             {isAdded ? (
