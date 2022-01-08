@@ -1,5 +1,5 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import {
   Typography,
@@ -10,16 +10,13 @@ import {
   Paper,
   Select,
   MenuItem,
-//   Select,
-//   MenuItem,
-//   FormControl,
-//   InputLabel,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { setToken } from "../features/authToken/tokenSlice";
 import { setUser } from "../features/user/userSlice";
+import getUserId from "../snippets/getUserId";
 
 /**
  * api: Get hashrate -> /api/hashrates
@@ -31,7 +28,7 @@ import { setUser } from "../features/user/userSlice";
  *   "model": 3,
  *   "quantity": 5
  * }
- * 
+ *
  */
 
 const useStyles = makeStyles({
@@ -50,102 +47,59 @@ const useStyles = makeStyles({
 });
 
 const SellerForm = () => {
-  const classes = useStyles();
-  const navigate = useNavigate();
-  //redirect user back to seller page
-
-  const [hashrateId, setHashrateId] = useState("");
+  const [hashrateData, setHashrateData] = useState([]);
+  const [hashrate_id, setHashrateId] = useState("");
+  const [lender_id, setLenderId] = useState("");
   const [model, setModel] = useState("");
   const [quantity, setQuantity] = useState("");
   const [modelError, setModelError] = useState(false);
   const [quantityError, setQuantityError] = useState(false);
-
-
-
-  const [password, setPassword] = useState("");
-  const [firstNameError, setFirstNameError] = useState(false);
-  const [lastNameError, setLastNameError] = useState(false);
-  const [addressError, setAddressError] = useState(false);
-  const [emailError, setEmailError] = useState(false);
-  const [dupEmailMsg, setDupEmailMsg] = useState(false);
-  const [passwordError, setPasswordError] = useState(false);
+  const classes = useStyles();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  //redirect user back to seller page
 
+  useEffect(() => {
+    const getHashRate = async () => {
+      const hashRate = await axios.get("/api/hashrates");
+      console.log(hashRate);
+      setHashrateData(hashRate.data.hashrates);
+    };
+    getHashRate();
+  }, []);
 
-  const handleSellerSubmit = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setModelError(false);
     setQuantityError(false);
 
+    if (model === "") {
+      setModelError(true);
+    }
+    if (quantity === "") {
+      setQuantityError(true);
+    }
+    const userId = await getUserId();
 
-
-  }
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setFirstNameError(false);
-    setLastNameError(false);
-    setAddressError(false);
-    setEmailError(false);
-    setPasswordError(false);
-
-    if (firstName === "") {
-      setFirstNameError(true);
-    }
-    if (lastName === "") {
-      setLastNameError(true);
-    }
-    if (address === "") {
-      setAddressError(true);
-    }
-    if (email === "") {
-      setEmailError(true);
-    }
-    if (password === "") {
-      setPasswordError(true);
-    }
-
-    if (firstName && lastName && address && email && password) {
+    if (hashrate_id && model && quantity) {
       const userPayload = {
-        first_name: firstName,
-        last_name: lastName,
-        address,
-        email,
-        password,
+        lender_id: userId,
+        hashrate_id,
+        model,
+        quantity,
       };
-
-      const res = await axios.post("/api/users", userPayload, {
+      const res = await axios.post("/api/items", userPayload, {
         headers: {
           "Content-Type": "application/json",
-        },
-      });
-
-      if (res.data.userId) {
-        const authPayload = {
-          email,
-          password,
-        };
-
-        const res = await axios.post("/auth", authPayload, {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        if (res.data.token) {
-          dispatch(setToken(res.data.token));
-          dispatch(setUser(true));
-          navigate("/marketplace");
         }
+      });
+      if (res.data.token) {
+        dispatch(setToken(res.data.token));
+        dispatch(setUser(true));
+        navigate("/seller");
       }
-
-      if (
-        res.data ===
-        'duplicate key value violates unique constraint "email_unique"'
-      ) {
-        setDupEmailMsg("Email already exists!");
       }
     }
-  };
 
   return (
     <Container>
@@ -157,49 +111,46 @@ const SellerForm = () => {
                 variant="h6"
                 color="textSecondary"
                 component="h2"
-                gutterBottom
-              >
+                gutterBottom>
                 Seller Form
               </Typography>
-              <Select  
+              <Select
                 onChange={(e) => setHashrateId(e.target.value)}
                 className={classes.field}
                 color="secondary"
                 variant="outlined"
-                value={hashrateId} displayEmpty
+                value={hashrate_id} displayEmpty
                 required
                 fullWidth>
-               <MenuItem 
-               required
-               value="" disabled>Hash Rate</MenuItem>
-               <MenuItem value={1}>Hashrate 1</MenuItem>
-               <MenuItem value={2}>Hashrate 2</MenuItem>
-               <MenuItem value={3}>Hashrate 3</MenuItem>
-               <MenuItem value={4}>Hashrate 4</MenuItem>
-               <MenuItem value={5}>Hashrate 5</MenuItem>
-               <MenuItem value={6}>Hashrate 6</MenuItem>
+                <MenuItem required value="" disabled>
+                  Hash Rate *
+                </MenuItem>
+                {hashrateData.map((ele, idx) => (
+                  <MenuItem value={idx}>{ele.hashrate_tier}</MenuItem>
+                ))}
               </Select>
               <TextField
-                onChange={(e) => setModel=(e.target.value)}
+                onChange={(e) => setModel(e.target.value)}
                 className={classes.field}
                 color="secondary"
                 variant="outlined"
                 label="Model"
                 required
                 fullWidth
+                error={modelError}
               />
               <TextField
-                onChange={(e) => setAddress(e.target.value)}
+                onChange={(e) => setQuantity(e.target.value)}
                 className={classes.field}
                 color="secondary"
                 variant="outlined"
                 label="Quantity"
                 required
                 fullWidth
-                error={addressError}
+                error={quantityError}
               />
-              <span className="text-danger">{dupEmailMsg}</span>
-        
+              <span className="text-danger">{}</span>
+
               <Button type="submit" color="secondary" variant="contained">
                 Submit
               </Button>
@@ -209,6 +160,7 @@ const SellerForm = () => {
       </form>
     </Container>
   );
-};
+}
+
 
 export default SellerForm;
