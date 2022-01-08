@@ -5,6 +5,7 @@ import { Button } from "@material-ui/core";
 import { Link } from "react-router-dom";
 
 const SuccessPage = () => {
+
   //useEffect
   //create transaction
   //update item inventory
@@ -29,11 +30,10 @@ const SuccessPage = () => {
         lastName: userInfo.data.user.last_name,
         email: userInfo.data.user.email,
       })
-    }
+    } 
     getUserInfo();
 
   }, [])
-
 
   return (
     <>
@@ -52,7 +52,7 @@ const SuccessPage = () => {
       <div style={{
         display: 'block',
       }}><br/>
-        <p>You should recieve an Email to {user.email} shortly!</p>
+        <p>You should receive an Email to {user.email} shortly!</p>
       </div>
       <Link to="/marketplace">
         <Button variant='contained'>Continue Shopping</Button>
