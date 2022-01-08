@@ -226,7 +226,6 @@ cartController.checkoutCart = async (req, res, next) => {
   let session;
 
   try {
-    console.log(userId);
     session = await stripeAPI.checkout.sessions.create({
       payment_method_types: ["card"],
       mode: "payment",
