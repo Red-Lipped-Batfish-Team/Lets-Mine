@@ -73,14 +73,12 @@ const Card = ({ props }) => {
     console.log(res);
   };
 
-  //useeffect()
-  //checking to see if item is in cart
   useEffect(() => {
     const getItems = async () => {
       const userId = await getUserId();
 
       const res = await axios.get(`/api/carts/user/${userId}`);
-      //check against current item id
+  
       res.data.userCart.map((elem) => {
         if (elem.item_id === id) {
           setIsAdded(true);
@@ -88,7 +86,6 @@ const Card = ({ props }) => {
       });
     };
     getItems();
-    //get user id and check all items from user and compare against the current item id, if there set isAdded to true
   }, [cartItems]);
 
   return (

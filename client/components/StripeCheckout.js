@@ -2,11 +2,9 @@ import React, { useState } from "react";
 import { useStripe } from "@stripe/react-stripe-js";
 import axios from "axios";
 import { Button } from "@material-ui/core";
-const StripeCheckout = ({ carts }) => {
+const StripeCheckout = ({ carts, userId }) => {
   const [email, setEmail] = useState("");
   const stripe = useStripe();
-
-  // const { amount, expired, item_id, quantity, rental_duration, model } = carts;
 
   const handleCheckout = async (e) => {
     e.preventDefault();
@@ -23,11 +21,12 @@ const StripeCheckout = ({ carts }) => {
     // if (error) {
     //   console.log(error);
     // }
+    
 
     const line_items = carts.map((item) => {
       return {
         quantity: item.quantity,
-        duration: item.rental_duration,
+        // duration: item.rental_duration,
         price_data: {
           currency: "usd",
           unit_amount: item.amount * 100, // amount is in cents
@@ -44,7 +43,7 @@ const StripeCheckout = ({ carts }) => {
       const result = await axios.post("/api/carts/checkout", {
         line_items,
         customer_email: email,
-        cartId,
+        userId,
       });
       console.log(result.data);
       const { sessionId } = result.data;

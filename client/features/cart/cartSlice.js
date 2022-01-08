@@ -11,7 +11,6 @@ export const cartSlice = createSlice({
   initialState,
   reducers: {
     updateTotal: (state, action) => {
-      console.log(action.payload);
       const price =
         action.payload.price *
         (action.payload.quantity + action.payload.duration);
@@ -23,7 +22,7 @@ export const cartSlice = createSlice({
       state.totalQuantity = 0;
       state.totalDuration = 0;
       state.totalPrice = 0;
-    },
+    }
   },
 });
 

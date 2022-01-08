@@ -15,12 +15,10 @@ import axios from "axios";
 import { useDispatch } from "react-redux";
 import { updateTotal } from "../features/cart/cartSlice";
 
-const CartItem = ({ props, setUpdate }) => {
+const CartItem = ({ props, carts, setCarts}) => {
   const {
     id,
     amount,
-    expired,
-    item_id,
     quantity,
     rental_duration,
     model,
@@ -46,53 +44,113 @@ const CartItem = ({ props, setUpdate }) => {
     if (cartItemQuantity < max_quantity) {
       let newQuantity = cartItemQuantity;
       newQuantity += 1;
-      let newAmount = amount;
-      newAmount = itemPrice * (newQuantity + rental_duration);
+      let newAmount = cartItemTotalPrice;
+      newAmount = itemPrice * (newQuantity + cartItemDuration);
+      
       const res = await axios.patch(`/api/carts/${id}`, {
         quantity: newQuantity,
-        amount: newAmount,
+        amount: newAmount.toFixed(2),
       });
       // console.log(res);
       dispatch(
         updateTotal({
           duration: 0,
           quantity: 1,
-          price: itemPrice,
+          price: itemPrice.toFixed(2),
         })
       );
-      setUpdate(newAmount);
       setCartItemQuantity(newQuantity);
-      setCartItemTotalPrice(newAmount);
+      setCartItemTotalPrice(newAmount.toFixed(2));
     }
   };
 
-  // const handleCartDecreaseQuantity = () => {
-  //   if (quantity > 1) {
-  //     let newQuantity = quantity;
-  //     return setCurrQuantity((newQuantity -= 1));
-  //   }
-  // };
+  const handleCartDecreaseQuantity = async () => {
+    if (cartItemQuantity > 1) {
+      let newQuantity = cartItemQuantity;
+      newQuantity -= 1;
+      let newAmount = cartItemTotalPrice;
+      newAmount = itemPrice * (newQuantity + cartItemDuration);
 
-  // const handleCartIncreaseDuration = () => {
-  //   if (rental_duration < max_duration) {
-  //     let newDurr = currDuration;
-  //     return setCurrDuration((newDurr += 1));
-  //   }
-  // };
+      const res = await axios.patch(`/api/carts/${id}`, {
+        quantity: newQuantity,
+        amount: newAmount.toFixed(2),
+      });
+      // console.log(res);
+      dispatch(
+        updateTotal({
+          duration: 0,
+          quantity: -1,
+          price: itemPrice.toFixed(2),
+        })
+      );
+      setCartItemQuantity(newQuantity);
+      setCartItemTotalPrice(newAmount.toFixed(2));
+    }
+    }
+  
 
-  // const handleCartDecreaseDuration = () => {
-  //   if (duration > 1) {
-  //     let newDurr = currDuration;
-  //     return setCurrDuration((newDurr -= 1));
-  //   }
-  // };
+  const handleCartIncreaseDuration = async() => {
+    if (cartItemDuration < max_duration) {
+      let newDuration = cartItemDuration;
+      newDuration += 1;
+      let newAmount = cartItemTotalPrice;
+      newAmount = itemPrice * (newDuration + cartItemQuantity);
+
+      const res = await axios.patch(`/api/carts/${id}`, {
+        duration: newDuration,
+        amount: newAmount.toFixed(2),
+      });
+      // console.log(res);
+      dispatch(
+        updateTotal({
+          duration: 1,
+          quantity: 0,
+          price: itemPrice.toFixed(2),
+        })
+      );
+      setCartItemDuration(newDuration);
+      setCartItemTotalPrice(newAmount.toFixed(2));
+    }
+  };
+
+  const handleCartDecreaseDuration = async () => {
+    if (cartItemDuration > 1) {
+      let newDuration = cartItemDuration;
+      newDuration -= 1;
+      let newAmount = cartItemTotalPrice;
+      newAmount = itemPrice * (newDuration + cartItemQuantity);
+
+      const res = await axios.patch(`/api/carts/${id}`, {
+        duration: newDuration,
+        amount: newAmount.toFixed(2),
+      });
+      // console.log(res);
+      dispatch(
+        updateTotal({
+          duration: -1,
+          quantity: 0,
+          price: itemPrice.toFixed(2),
+        })
+      );
+      setCartItemDuration(newDuration);
+      setCartItemTotalPrice(newAmount.toFixed(2));
+    }
+  };
+
+  const handleDeleteCart = async () => {
+    const res = await axios.delete(`/api/carts/${id}`)
+    let newCarts = carts.filter(cart => cart.id !== id)
+    setCarts([...newCarts])
+  }
+
+  
 
   return (
     <div>
       <Card>
         <CardHeader
           action={
-            <IconButton aria-label="settings">
+            <IconButton aria-label="settings" onClick={handleDeleteCart}>
               <HighlightOffIcon />
             </IconButton>
           }
@@ -109,15 +167,23 @@ const CartItem = ({ props, setUpdate }) => {
             >
               +
             </Button>
-            <Button size="small" color="primary">
+            <Button
+              size="small"
+              color="primary"
+              onClick={handleCartDecreaseQuantity}
+            >
               -
             </Button>
             <br />
             Duration: {cartItemDuration}
-            <Button size="small" color="primary">
+            <Button
+              size="small"
+              color="primary"
+              onClick={handleCartIncreaseDuration}
+            >
               +
             </Button>
-            <Button size="small" color="primary">
+            <Button size="small" color="primary" onClick={handleCartDecreaseDuration}>
               -
             </Button>
             <br />
@@ -125,7 +191,7 @@ const CartItem = ({ props, setUpdate }) => {
             <br /> */}
           </Typography>
           <Typography className="mt-2">
-            Amount: ${cartItemTotalPrice}
+            Total: ${cartItemTotalPrice}
           </Typography>
         </CardContent>
         {/* <CardActions>

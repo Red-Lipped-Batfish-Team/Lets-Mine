@@ -29,7 +29,7 @@ const App = () => {
       }
     };
     getUser();
-  });
+  },[]);
 
   return (
     <Router>
