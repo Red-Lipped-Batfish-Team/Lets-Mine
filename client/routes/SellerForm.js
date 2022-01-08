@@ -68,15 +68,6 @@ const SellerForm = () => {
     getHashRate();
   }, []);
 
-  //  useEffect(() => {
-  //     const getUser = async () => {
-  //       const userId = await getUserId();
-  //       if (userId) {
-  //         dispatch(setUser(true));
-  //       }
-  //     };
-  //     getUser();
-  //   },[]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
