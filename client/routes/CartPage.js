@@ -5,7 +5,8 @@ import getUserId from "../snippets/getUserId";
 import getCoinPrice from "../snippets/getCoinPrice";
 import Checkout from "./Checkout";
 import { useDispatch, useSelector } from "react-redux";
-import { updateTotal, resetTotal} from "../features/cart/cartSlice";
+import { updateTotal, resetTotal } from "../features/cart/cartSlice";
+import { Container, Typography } from "@material-ui/core";
 
 const CartPage = () => {
   //api request to get the cart id or check cart state
@@ -53,7 +54,11 @@ const CartPage = () => {
         <h2>Cart</h2>
 
         {fetching ? (
-          <h4>Fetching..</h4>
+            <Container>
+              <Typography variant='h3' align="center" color="textPrimary">
+                Fetching...
+              </Typography>
+            </Container>
         ) : carts.length !== 0 ? (
           carts.map((item, idx) => (
             <CartItem

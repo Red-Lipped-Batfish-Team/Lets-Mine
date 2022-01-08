@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from "react";
-import { Button } from "@material-ui/core";
 import getUserId from "../snippets/getUserId";
 import getCoinPrice from "../snippets/getCoinPrice";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../features/cart/cartSlice";
+import {
+  Button,
+  Card as ItemCard,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Typography,
+  CssBaseline,
+  ButtonGroup
+} from "@material-ui/core";
 /**
  *
  * @param {Object} props
@@ -15,7 +24,7 @@ import { addToCart } from "../features/cart/cartSlice";
 const Card = ({ props }) => {
   const {
     id,
-    header,
+    model,
     quantity,
     size,
     duration,
@@ -93,46 +102,65 @@ const Card = ({ props }) => {
 
   return (
     <>
-      <div className="card bg-dark mt-3 mb-3" style={{ maxWidth: size }}>
-        <h4 className="card-header text-light">{header}</h4>
-        <div className="card-body text-light">{quantity}</div>
-        <div className="text-light mt-2 mb-2">
-          <Button variant="contained" onClick={handleIncreaseQuantity}>
-            {" "}
-            +
-          </Button>
-          Quantity: {currQuantity}
-          <Button variant="contained" onClick={handleDecreaseQuantity}>
-            {" "}
-            -
-          </Button>
-        </div>
-        <div className="text-light mt-2 mb-2">
-          <Button variant="contained" onClick={handleIncreaseDuration}>
-            {" "}
-            +
-          </Button>
-          Duration: {currDuration} Day(s)
-          <Button variant="contained" onClick={handleDecreaseDuration}>
-            {" "}
-            -
-          </Button>
-        </div>{" "}
-        {isAdded ? (
-          <Button disabled variant="contained" className="text-light mt-2 mb-2">
-            Added
-          </Button>
-        ) : (
-          <Button
-            className="mt-2 mb-2"
-            variant="contained"
-            onClick={handleAddItem}
-          >
-            {" "}
-            Add Item
-          </Button>
-        )}
-      </div>
+      <CssBaseline />
+      <ItemCard>
+        <CardHeader
+          align="center"
+          style={{ background: "#000", color: "#fff" }}
+          // action={
+          //   <IconButton aria-label="settings" onClick={handleDeleteCart}>
+          //     <HighlightOffIcon />
+          //   </IconButton>
+          // }
+          title={model}
+        />
+        <CardContent align="center">
+          <Typography variant="body2">Quantity: {currQuantity}</Typography>
+          <ButtonGroup className="mb-2">
+            <Button variant="contained" onClick={handleIncreaseQuantity}>
+              {" "}
+              +
+            </Button>
+            <Button variant="contained" onClick={handleDecreaseQuantity}>
+              {" "}
+              -
+            </Button>
+          </ButtonGroup>
+
+          <Typography variant="body2">Duration: {currDuration}</Typography>
+          <ButtonGroup >
+            <Button variant="contained" onClick={handleIncreaseDuration}>
+              {" "}
+              +
+            </Button>
+            <Button variant="contained" onClick={handleDecreaseDuration}>
+              {" "}
+              -
+            </Button>
+          </ButtonGroup>
+
+          <div className="mt-2">
+            {isAdded ? (
+              <Button
+                disabled
+                variant="contained"
+                className="text-light mt-2 mb-2"
+              >
+                Added
+              </Button>
+            ) : (
+              <Button
+                className="mt-2 mb-2"
+                variant="contained"
+                onClick={handleAddItem}
+              >
+                {" "}
+                Add Item
+              </Button>
+            )}
+          </div>
+        </CardContent>
+      </ItemCard>
     </>
   );
 };
