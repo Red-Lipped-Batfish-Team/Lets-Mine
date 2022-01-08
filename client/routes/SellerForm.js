@@ -112,7 +112,6 @@ const SellerForm = () => {
         email,
         password,
       };
-
       const res = await axios.post("/api/users", userPayload, {
         headers: {
           "Content-Type": "application/json",

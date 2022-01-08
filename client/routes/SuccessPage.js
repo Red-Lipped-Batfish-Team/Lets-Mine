@@ -29,7 +29,7 @@ const SuccessPage = () => {
         lastName: userInfo.data.user.last_name,
         email: userInfo.data.user.email,
       })
-    }
+    } 
     getUserInfo();
 
   }, [])
