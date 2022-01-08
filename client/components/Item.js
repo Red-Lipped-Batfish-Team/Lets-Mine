@@ -8,7 +8,7 @@ const Item = ({ props }) => {
     <>
       <Card
         props={{
-          header: model,
+          model: model,
           quantity: quantity,
           duration: duration,
           size: "30rem",

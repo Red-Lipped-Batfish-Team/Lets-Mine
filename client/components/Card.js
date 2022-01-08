@@ -1,10 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { Button } from "@material-ui/core";
 import getUserId from "../snippets/getUserId";
 import getCoinPrice from "../snippets/getCoinPrice";
 import axios from "axios";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../features/cart/cartSlice";
+import {
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Typography,
+  IconButton,
+} from "@material-ui/core";
 /**
  *
  * @param {Object} props
@@ -15,7 +23,7 @@ import { addToCart } from "../features/cart/cartSlice";
 const Card = ({ props }) => {
   const {
     id,
-    header,
+    model,
     quantity,
     size,
     duration,
@@ -93,7 +101,7 @@ const Card = ({ props }) => {
 
   return (
     <>
-      <div className="card bg-dark mt-3 mb-3" style={{ maxWidth: size }}>
+      {/* <div className="card bg-dark mt-3 mb-3" style={{ maxWidth: size }}>
         <h4 className="card-header text-light">{header}</h4>
         <div className="card-body text-light">{quantity}</div>
         <div className="text-light mt-2 mb-2">
@@ -132,7 +140,55 @@ const Card = ({ props }) => {
             Add Item
           </Button>
         )}
-      </div>
+      </div> */}
+      <Card>
+        <CardHeader
+          // action={
+          //   <IconButton aria-label="settings" onClick={handleDeleteCart}>
+          //     <HighlightOffIcon />
+          //   </IconButton>
+          // }
+          title={model}
+          // subheader="September 14, 2016"
+        />
+        <CardContent>
+          <Typography variant="body2">
+            Quantity: {cartItemQuantity}
+            <Button
+              size="small"
+              color="primary"
+              onClick={handleCartIncreaseQuantity}
+            >
+              +
+            </Button>
+            <Button
+              size="small"
+              color="primary"
+              onClick={handleCartDecreaseQuantity}
+            >
+              -
+            </Button>
+            <br />
+            Duration: {cartItemDuration}
+            <Button
+              size="small"
+              color="primary"
+              onClick={handleCartIncreaseDuration}
+            >
+              +
+            </Button>
+            <Button size="small" color="primary" onClick={handleCartDecreaseDuration}>
+              -
+            </Button>
+            <br />
+            {/* Amount: ${amount}
+            <br /> */}
+          </Typography>
+          <Typography className="mt-2">
+            Total: ${cartItemTotalPrice}
+          </Typography>
+        </CardContent>
+        </Card>
     </>
   );
 };
