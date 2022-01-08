@@ -9,12 +9,15 @@ import {
 } from "./NavBarElements";
 import { useSelector, useDispatch } from "react-redux";
 import { clearUser } from "../features/user/userSlice";
+import ShoppingCartOutlinedIcon from "@material-ui/icons/ShoppingCartOutlined";
+import { Badge } from "@material-ui/core";
 //import logo from '../images/redlipfish.jpg';
 //import logo from '../images/redlipfish.png';
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user.user);
+  const cartTotal = useSelector((state) => state.cart.totalQuantity);
 
   const handleSignOut = () => {
     // dispatch(clearToken);
@@ -51,7 +54,10 @@ const Navbar = () => {
             </NavLink>
           )}
           <NavLink to="/cart" activeStyle>
-            Cart
+            <Badge badgeContent={cartTotal} color="success">
+              <ShoppingCartOutlinedIcon />
+            </Badge>
+            {/* Cart */}
           </NavLink>
 
           {user ? (

@@ -29,7 +29,7 @@ const CartPage = () => {
           updateTotal({
             duration: elem.rental_duration,
             quantity: elem.quantity,
-            price: itemPrice.toFixed(2),
+            price: Math.trunc(itemPrice),
           })
         );
       });
