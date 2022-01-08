@@ -6,12 +6,13 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "../features/cart/cartSlice";
 import {
   Button,
-  Card,
+  Card as ItemCard,
   CardActions,
   CardContent,
   CardHeader,
   Typography,
-  IconButton,
+  CssBaseline,
+  ButtonGroup
 } from "@material-ui/core";
 /**
  *
@@ -101,94 +102,65 @@ const Card = ({ props }) => {
 
   return (
     <>
-      {/* <div className="card bg-dark mt-3 mb-3" style={{ maxWidth: size }}>
-        <h4 className="card-header text-light">{header}</h4>
-        <div className="card-body text-light">{quantity}</div>
-        <div className="text-light mt-2 mb-2">
-          <Button variant="contained" onClick={handleIncreaseQuantity}>
-            {" "}
-            +
-          </Button>
-          Quantity: {currQuantity}
-          <Button variant="contained" onClick={handleDecreaseQuantity}>
-            {" "}
-            -
-          </Button>
-        </div>
-        <div className="text-light mt-2 mb-2">
-          <Button variant="contained" onClick={handleIncreaseDuration}>
-            {" "}
-            +
-          </Button>
-          Duration: {currDuration} Day(s)
-          <Button variant="contained" onClick={handleDecreaseDuration}>
-            {" "}
-            -
-          </Button>
-        </div>{" "}
-        {isAdded ? (
-          <Button disabled variant="contained" className="text-light mt-2 mb-2">
-            Added
-          </Button>
-        ) : (
-          <Button
-            className="mt-2 mb-2"
-            variant="contained"
-            onClick={handleAddItem}
-          >
-            {" "}
-            Add Item
-          </Button>
-        )}
-      </div> */}
-      <Card>
+      <CssBaseline />
+      <ItemCard>
         <CardHeader
+          align="center"
+          style={{ background: "#000", color: "#fff" }}
           // action={
           //   <IconButton aria-label="settings" onClick={handleDeleteCart}>
           //     <HighlightOffIcon />
           //   </IconButton>
           // }
           title={model}
-          // subheader="September 14, 2016"
         />
-        <CardContent>
-          <Typography variant="body2">
-            Quantity: {cartItemQuantity}
-            <Button
-              size="small"
-              color="primary"
-              onClick={handleCartIncreaseQuantity}
-            >
+        <CardContent align="center">
+          <Typography variant="body2">Quantity: {currQuantity}</Typography>
+          <ButtonGroup className="mb-2">
+            <Button variant="contained" onClick={handleIncreaseQuantity}>
+              {" "}
               +
             </Button>
-            <Button
-              size="small"
-              color="primary"
-              onClick={handleCartDecreaseQuantity}
-            >
+            <Button variant="contained" onClick={handleDecreaseQuantity}>
+              {" "}
               -
             </Button>
-            <br />
-            Duration: {cartItemDuration}
-            <Button
-              size="small"
-              color="primary"
-              onClick={handleCartIncreaseDuration}
-            >
+          </ButtonGroup>
+
+          <Typography variant="body2">Duration: {currDuration}</Typography>
+          <ButtonGroup >
+            <Button variant="contained" onClick={handleIncreaseDuration}>
+              {" "}
               +
             </Button>
-            <Button size="small" color="primary" onClick={handleCartDecreaseDuration}>
+            <Button variant="contained" onClick={handleDecreaseDuration}>
+              {" "}
               -
             </Button>
-            <br />
-            {/* Amount: ${amount}
-            <br /> */}
-          </Typography>
-          <Typography className="mt-2">
-            Total: ${cartItemTotalPrice}
-          </Typography>
+          </ButtonGroup>
+
+          <div className="mt-2">
+            {isAdded ? (
+              <Button
+                disabled
+                variant="contained"
+                className="text-light mt-2 mb-2"
+              >
+                Added
+              </Button>
+            ) : (
+              <Button
+                className="mt-2 mb-2"
+                variant="contained"
+                onClick={handleAddItem}
+              >
+                {" "}
+                Add Item
+              </Button>
+            )}
+          </div>
         </CardContent>
-        </Card>
+      </ItemCard>
     </>
   );
 };

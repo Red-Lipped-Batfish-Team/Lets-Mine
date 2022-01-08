@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Item from "../components/Item";
 import axios from "axios";
 import getUserId from "../snippets/getUserId";
-import { Button } from "@material-ui/core";
+import { Button, Container, Typography } from "@material-ui/core";
 
 const SellerPage = () => {
   const [fetching, setFetching] = useState(false);
@@ -25,14 +25,18 @@ const SellerPage = () => {
 
   return (
     <>
-      <Link to='/sellerform'>
+      <Link to="/sellerform">
         <div>
           <Button>Add Item</Button>
         </div>
       </Link>
 
       {fetching ? (
-        <h4>Fetching..</h4>
+        <Container>
+          <Typography variant="h3" align="center" color="textPrimary">
+            Fetching...
+          </Typography>
+        </Container>
       ) : (
         items.map((item, idx) => <Item key={idx} props={item} />)
       )}
