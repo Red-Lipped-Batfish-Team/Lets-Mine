@@ -68,6 +68,16 @@ const SellerForm = () => {
     getHashRate();
   }, []);
 
+  //  useEffect(() => {
+  //     const getUser = async () => {
+  //       const userId = await getUserId();
+  //       if (userId) {
+  //         dispatch(setUser(true));
+  //       }
+  //     };
+  //     getUser();
+  //   },[]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setModelError(false);
@@ -79,7 +89,6 @@ const SellerForm = () => {
     if (quantity === "") {
       setQuantityError(true);
     }
-    const userId = await getUserId();
 
     if (hashrate_id && model && quantity) {
       const userPayload = {
@@ -99,6 +108,8 @@ const SellerForm = () => {
         navigate("/seller");
       }
       }
+      setModel('');
+      setQuantity('');
     }
 
   return (
@@ -109,7 +120,7 @@ const SellerForm = () => {
             <Paper className={classes.paperStyle} elevation={10}>
               <Typography
                 variant="h6"
-                color="textSecondary"
+                color="textPrimary"
                 component="h2"
                 gutterBottom>
                 Seller Form
@@ -151,8 +162,8 @@ const SellerForm = () => {
               />
               <span className="text-danger">{}</span>
 
-              <Button type="submit" color="secondary" variant="contained">
-                Submit
+              <Button type="submit" color="primary" variant="contained">
+                Submit Item
               </Button>
             </Paper>
           </Grid>

@@ -27,7 +27,8 @@ const SellerPage = () => {
     <>
       <Link to='/sellerform'>
         <div>
-          <Button>Add Item</Button>
+          <Button
+          >Add Item</Button>
         </div>
       </Link>
 

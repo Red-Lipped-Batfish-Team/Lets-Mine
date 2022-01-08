@@ -1,15 +1,10 @@
-import React, {useState } from "react";
+import React, { useState } from "react";
 import { useStripe } from "@stripe/react-stripe-js";
 import axios from "axios";
-
-const StripeCheckout = ({}) => {
+import { Button } from "@material-ui/core";
+const StripeCheckout = ({ carts, userId }) => {
   const [email, setEmail] = useState("");
-    const stripe = useStripe();
-    
-    //get cart & cartID data from cartSlice
-    const cartItems = [{title: 'item1', price: 100, quantity: 3, description: 'rig1', imageUrl:'blank'}]
-    const cartId = 5;
-
+  const stripe = useStripe();
 
   const handleCheckout = async (e) => {
     e.preventDefault();
@@ -28,16 +23,17 @@ const StripeCheckout = ({}) => {
     // }
     
 
-    const line_items = cartItems.map((item) => {
+    const line_items = carts.map((item) => {
       return {
         quantity: item.quantity,
+        // duration: item.rental_duration,
         price_data: {
           currency: "usd",
-          unit_amount: item.price * 100, // amount is in cents
+          unit_amount: item.amount * 100, // amount is in cents
           product_data: {
-            name: item.title,
-            description: item.description,
-            images: [item.imageUrl],
+            name: item.model,
+            // description: item.description,
+            // images: [],
           },
         },
       };
@@ -45,7 +41,9 @@ const StripeCheckout = ({}) => {
 
     try {
       const result = await axios.post("/api/carts/checkout", {
-        line_items, customer_email: email, cartId,
+        line_items,
+        customer_email: email,
+        userId,
       });
       console.log(result.data);
       const { sessionId } = result.data;
@@ -70,9 +68,7 @@ const StripeCheckout = ({}) => {
         />
       </div>
       <div>
-        <button type="submit">
-          Checkout
-        </button>
+        <Button type="submit">Checkout</Button>
       </div>
     </form>
   );

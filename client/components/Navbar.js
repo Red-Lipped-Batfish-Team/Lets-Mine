@@ -55,11 +55,11 @@ const Navbar = () => {
           </NavLink>
 
           {user ? (
-              <></>
-          ): (
+            <></>
+          ) : (
             <NavLink to="/login" activeStyle>
-            Login
-          </NavLink>
+              Login
+            </NavLink>
           )}
 
           {user ? (
@@ -69,7 +69,6 @@ const Navbar = () => {
           ) : (
             <NavBtnLink to="/signup">Sign Up</NavBtnLink>
           )}
-        
         </NavMenu>
       </Nav>
     </>
